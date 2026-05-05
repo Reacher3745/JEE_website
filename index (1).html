@@ -1,0 +1,2045 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vidyalay — Maths & Chemistry</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════
+   CSS VARIABLES & THEME
+══════════════════════════════════════════ */
+:root {
+  --navy: #0d1b3e;
+  --navy-2: #162040;
+  --navy-3: #1e2d55;
+  --amber: #f4a234;
+  --amber-light: #fde68a;
+  --amber-dark: #d97706;
+  --cream: #faf8f4;
+  --cream-2: #f2efe8;
+  --white: #ffffff;
+  --text: #0d1b3e;
+  --text-2: #4a5568;
+  --text-3: #718096;
+  --border: #e2ddd4;
+  --card: #ffffff;
+  --surface: #f7f4ef;
+  --success: #059669;
+  --danger: #dc2626;
+  --info: #2563eb;
+  --sidebar-w: 260px;
+  --topbar-h: 60px;
+  --radius: 12px;
+  --shadow: 0 2px 16px rgba(13,27,62,0.08);
+  --shadow-lg: 0 8px 40px rgba(13,27,62,0.14);
+  --transition: 0.2s cubic-bezier(0.4,0,0.2,1);
+}
+[data-theme="dark"] {
+  --navy: #e8e0d0;
+  --navy-2: #d4cabb;
+  --navy-3: #b8ae9c;
+  --cream: #0f1420;
+  --cream-2: #141b2d;
+  --white: #1a2240;
+  --text: #e8e0d0;
+  --text-2: #a8b3c8;
+  --text-3: #6b7a96;
+  --border: #2a3454;
+  --card: #1a2240;
+  --surface: #141b2d;
+  --shadow: 0 2px 16px rgba(0,0,0,0.3);
+  --shadow-lg: 0 8px 40px rgba(0,0,0,0.4);
+}
+
+/* ══════════════════════════════════════════
+   RESET & BASE
+══════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--cream);
+  color: var(--text);
+  min-height: 100vh;
+  transition: background var(--transition), color var(--transition);
+  overflow-x: hidden;
+}
+h1,h2,h3,h4,h5 { font-family: 'Playfair Display', serif; }
+a { text-decoration: none; color: inherit; }
+button { cursor: pointer; font-family: 'DM Sans', sans-serif; }
+input, textarea, select { font-family: 'DM Sans', sans-serif; }
+img { max-width: 100%; }
+ul { list-style: none; }
+
+/* ══════════════════════════════════════════
+   SCROLLBAR
+══════════════════════════════════════════ */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* ══════════════════════════════════════════
+   VIEWS SYSTEM
+══════════════════════════════════════════ */
+.view { display: none; }
+.view.active { display: block; }
+
+/* ══════════════════════════════════════════
+   LANDING PAGE
+══════════════════════════════════════════ */
+#landing {
+  min-height: 100vh;
+  background: var(--navy-landing, #0d1b3e);
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+[data-theme="dark"] #landing { background: #0a1020; }
+.landing-bg {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 70% 40%, rgba(244,162,52,0.18) 0%, transparent 60%),
+              radial-gradient(ellipse 50% 50% at 20% 80%, rgba(37,99,235,0.15) 0%, transparent 60%);
+  pointer-events: none;
+}
+.landing-grid {
+  position: absolute; inset: 0;
+  background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+}
+.landing-nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.5rem 3rem;
+  position: relative; z-index: 10;
+}
+.logo { display: flex; align-items: center; gap: 10px; }
+.logo-mark {
+  width: 38px; height: 38px;
+  background: var(--amber);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Playfair Display', serif;
+  font-weight: 700; font-size: 18px; color: #0d1b3e;
+}
+.logo-text { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: #fff; }
+.logo-text span { color: var(--amber); }
+.landing-nav-links { display: flex; align-items: center; gap: 1rem; }
+.btn { display: inline-flex; align-items: center; gap: 6px; padding: 10px 22px; border-radius: 8px; font-size: 14px; font-weight: 500; border: none; transition: all var(--transition); }
+.btn-primary { background: var(--amber); color: #0d1b3e; }
+.btn-primary:hover { background: var(--amber-dark); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(244,162,52,0.4); }
+.btn-outline { background: transparent; color: #fff; border: 1.5px solid rgba(255,255,255,0.3); }
+.btn-outline:hover { background: rgba(255,255,255,0.08); }
+.btn-ghost { background: transparent; color: var(--text-2); }
+.btn-ghost:hover { background: var(--surface); }
+.btn-danger { background: var(--danger); color: #fff; }
+.btn-danger:hover { background: #b91c1c; }
+.btn-success { background: var(--success); color: #fff; }
+.btn-success:hover { background: #047857; }
+.btn-sm { padding: 7px 14px; font-size: 13px; }
+.btn-lg { padding: 14px 32px; font-size: 16px; border-radius: 10px; }
+.btn-icon { padding: 8px; border-radius: 8px; background: transparent; border: none; color: var(--text-2); }
+.btn-icon:hover { background: var(--surface); color: var(--text); }
+
+.landing-hero {
+  display: grid; grid-template-columns: 1fr 1fr;
+  align-items: center; gap: 3rem;
+  padding: 5rem 3rem 4rem;
+  position: relative; z-index: 10;
+  max-width: 1200px; margin: 0 auto;
+}
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(244,162,52,0.15);
+  border: 1px solid rgba(244,162,52,0.3);
+  border-radius: 99px; padding: 5px 14px;
+  font-size: 12px; font-weight: 500; color: var(--amber);
+  margin-bottom: 1.5rem;
+}
+.hero-title {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  line-height: 1.1; font-weight: 900; color: #fff;
+  margin-bottom: 1.5rem;
+}
+.hero-title span { color: var(--amber); }
+.hero-subtitle { font-size: 17px; color: rgba(255,255,255,0.65); line-height: 1.7; margin-bottom: 2.5rem; }
+.hero-cta { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+.hero-stats { display: flex; gap: 2rem; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); }
+.stat-item {}
+.stat-num { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: var(--amber); }
+.stat-label { font-size: 12px; color: rgba(255,255,255,0.5); }
+.hero-visual { position: relative; }
+.hero-card {
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 20px; padding: 1.5rem;
+  animation: float 5s ease-in-out infinite;
+}
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+.hero-card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 1rem; }
+.hero-card-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+.hero-card-meta { font-size: 12px; color: rgba(255,255,255,0.5); }
+.hero-card-title { font-size: 15px; font-weight: 500; color: #fff; }
+.chapter-list { display: flex; flex-direction: column; gap: 8px; }
+.chapter-item {
+  display: flex; align-items: center; gap: 10px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 8px; padding: 10px 12px;
+  font-size: 13px; color: rgba(255,255,255,0.8);
+  cursor: pointer; transition: all var(--transition);
+}
+.chapter-item:hover { background: rgba(255,255,255,0.1); }
+.chapter-num { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--amber); min-width: 28px; }
+.chapter-videos { margin-left: auto; font-size: 11px; color: rgba(255,255,255,0.4); }
+
+.features-section {
+  padding: 5rem 3rem;
+  position: relative; z-index: 10;
+  max-width: 1200px; margin: 0 auto;
+}
+.section-label { font-size: 12px; font-weight: 500; color: var(--amber); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1rem; text-align: center; }
+.section-title { font-size: 2.5rem; font-weight: 700; color: #fff; text-align: center; margin-bottom: 1rem; }
+.section-subtitle { font-size: 16px; color: rgba(255,255,255,0.55); text-align: center; margin-bottom: 3rem; }
+.features-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
+.feature-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px; padding: 1.5rem;
+  transition: all var(--transition);
+}
+.feature-card:hover { background: rgba(255,255,255,0.07); border-color: rgba(244,162,52,0.3); transform: translateY(-4px); }
+.feature-icon { font-size: 2rem; margin-bottom: 1rem; }
+.feature-title { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 600; color: #fff; margin-bottom: 0.5rem; }
+.feature-desc { font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.6; }
+.landing-footer {
+  text-align: center; padding: 2rem;
+  border-top: 1px solid rgba(255,255,255,0.07);
+  font-size: 13px; color: rgba(255,255,255,0.3);
+  position: relative; z-index: 10;
+}
+
+/* ══════════════════════════════════════════
+   AUTH MODAL
+══════════════════════════════════════════ */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: none; align-items: center; justify-content: center;
+  padding: 1rem;
+  animation: fadeIn 0.2s;
+}
+.modal-overlay.open { display: flex; }
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+.modal {
+  background: var(--card);
+  border-radius: 20px;
+  padding: 2.5rem;
+  width: 100%; max-width: 420px;
+  box-shadow: var(--shadow-lg);
+  animation: slideUp 0.25s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes slideUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+.modal-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 1.5rem; }
+.modal-logo .logo-mark { background: var(--amber); }
+.modal-logo .logo-text { color: var(--text); }
+.auth-title { font-size: 24px; font-weight: 700; margin-bottom: 6px; }
+.auth-sub { font-size: 14px; color: var(--text-3); margin-bottom: 2rem; }
+.form-group { margin-bottom: 1rem; }
+.form-label { display: block; font-size: 13px; font-weight: 500; color: var(--text-2); margin-bottom: 6px; }
+.form-control {
+  width: 100%; padding: 11px 14px;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 10px; font-size: 15px; color: var(--text);
+  transition: border-color var(--transition);
+  outline: none;
+}
+.form-control:focus { border-color: var(--amber); }
+.phone-input { display: flex; gap: 8px; }
+.phone-prefix {
+  padding: 11px 12px;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 10px; font-size: 15px; color: var(--text-2);
+  white-space: nowrap;
+}
+.otp-grid { display: grid; grid-template-columns: repeat(6,1fr); gap: 8px; }
+.otp-box {
+  text-align: center; padding: 14px 0;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 10px; font-size: 20px; font-weight: 600;
+  outline: none; width: 100%;
+  color: var(--text); transition: border-color var(--transition);
+}
+.otp-box:focus { border-color: var(--amber); }
+.auth-hint { font-size: 12px; color: var(--text-3); text-align: center; margin-top: 1rem; }
+.auth-hint a { color: var(--amber); cursor: pointer; }
+.btn-full { width: 100%; justify-content: center; padding: 13px; font-size: 15px; border-radius: 10px; }
+.timer { display: inline-flex; align-items: center; gap: 4px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--amber); }
+.demo-roles { display: flex; gap: 8px; margin-bottom: 1.5rem; }
+.role-btn {
+  flex: 1; padding: 8px;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 8px; font-size: 12px; font-weight: 500; color: var(--text-2);
+  transition: all var(--transition);
+}
+.role-btn.active { background: rgba(244,162,52,0.12); border-color: var(--amber); color: var(--amber-dark); }
+
+/* ══════════════════════════════════════════
+   APP SHELL (post-login)
+══════════════════════════════════════════ */
+#app { display: none; min-height: 100vh; }
+#app.visible { display: flex; }
+.sidebar {
+  width: var(--sidebar-w);
+  background: var(--navy-2, #162040);
+  min-height: 100vh;
+  position: fixed; left: 0; top: 0;
+  display: flex; flex-direction: column;
+  z-index: 100;
+  transition: transform var(--transition);
+}
+[data-theme="dark"] .sidebar { background: #0f1420; }
+.sidebar-logo {
+  display: flex; align-items: center; gap: 10px;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+.sidebar-logo .logo-text { color: #fff; font-size: 18px; }
+.sidebar-nav { flex: 1; padding: 1rem 0.75rem; overflow-y: auto; }
+.nav-section-label {
+  font-size: 10px; font-weight: 600;
+  color: rgba(255,255,255,0.3);
+  letter-spacing: 0.12em; text-transform: uppercase;
+  padding: 0.75rem 0.75rem 0.25rem;
+}
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 12px; border-radius: 8px;
+  font-size: 13.5px; font-weight: 500;
+  color: rgba(255,255,255,0.55);
+  cursor: pointer; transition: all var(--transition);
+  margin-bottom: 2px; border: none; background: none; width: 100%; text-align: left;
+}
+.nav-item:hover { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.9); }
+.nav-item.active { background: rgba(244,162,52,0.15); color: var(--amber); }
+.nav-item.active .nav-icon { color: var(--amber); }
+.nav-icon { font-size: 16px; width: 20px; text-align: center; flex-shrink: 0; }
+.nav-badge { margin-left: auto; background: var(--amber); color: #0d1b3e; font-size: 10px; font-weight: 600; padding: 1px 6px; border-radius: 99px; }
+.sidebar-footer {
+  padding: 1rem 0.75rem;
+  border-top: 1px solid rgba(255,255,255,0.07);
+}
+.user-card {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px; border-radius: 10px;
+  background: rgba(255,255,255,0.05);
+}
+.avatar {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: var(--amber);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 600; font-size: 14px; color: #0d1b3e;
+  flex-shrink: 0;
+}
+.avatar-lg { width: 48px; height: 48px; font-size: 20px; }
+.user-info { flex: 1; min-width: 0; }
+.user-name { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.9); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.user-role { font-size: 11px; color: rgba(255,255,255,0.35); }
+
+/* Main content area */
+.main {
+  margin-left: var(--sidebar-w);
+  flex: 1;
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+}
+.topbar {
+  height: var(--topbar-h);
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center;
+  padding: 0 1.5rem;
+  position: sticky; top: 0; z-index: 50;
+  gap: 1rem;
+}
+.topbar-title { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 600; flex: 1; }
+.search-bar {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 10px; padding: 8px 12px;
+  width: 280px; transition: border-color var(--transition);
+}
+.search-bar:focus-within { border-color: var(--amber); }
+.search-bar input { background: none; border: none; outline: none; font-size: 14px; color: var(--text); flex: 1; }
+.search-bar input::placeholder { color: var(--text-3); }
+.content { padding: 2rem; flex: 1; }
+
+/* ══════════════════════════════════════════
+   CARDS & COMPONENTS
+══════════════════════════════════════════ */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+}
+.card-sm { padding: 1rem; }
+.card-title { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 600; margin-bottom: 0.25rem; }
+.card-subtitle { font-size: 13px; color: var(--text-3); margin-bottom: 1rem; }
+
+.grid { display: grid; gap: 1rem; }
+.grid-2 { grid-template-columns: repeat(2,1fr); }
+.grid-3 { grid-template-columns: repeat(3,1fr); }
+.grid-4 { grid-template-columns: repeat(4,1fr); }
+.grid-auto { grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); }
+
+.badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 99px; font-size: 12px; font-weight: 500; }
+.badge-amber { background: rgba(244,162,52,0.15); color: var(--amber-dark); }
+.badge-blue { background: rgba(37,99,235,0.12); color: #2563eb; }
+.badge-green { background: rgba(5,150,105,0.12); color: #059669; }
+.badge-red { background: rgba(220,38,38,0.12); color: #dc2626; }
+.badge-purple { background: rgba(124,58,237,0.12); color: #7c3aed; }
+.badge-gray { background: var(--surface); color: var(--text-3); }
+
+.pill { padding: 4px 12px; border-radius: 99px; font-size: 12px; font-weight: 500; display: inline-block; }
+
+/* Subject cards */
+.subject-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: all var(--transition);
+  position: relative; overflow: hidden;
+}
+.subject-card::before {
+  content: ''; position: absolute; top: 0; right: 0;
+  width: 100px; height: 100px;
+  border-radius: 0 16px 0 100%;
+  opacity: 0.08;
+}
+.subject-card.maths::before { background: #2563eb; }
+.subject-card.chemistry::before { background: #059669; }
+.subject-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: var(--amber); }
+.subject-emoji { font-size: 2.5rem; margin-bottom: 0.75rem; }
+.subject-name { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+.subject-count { font-size: 13px; color: var(--text-3); }
+.subject-bar { height: 3px; border-radius: 2px; margin-top: 1rem; }
+.subject-card.maths .subject-bar { background: linear-gradient(90deg, #2563eb, #7c3aed); }
+.subject-card.chemistry .subject-bar { background: linear-gradient(90deg, #059669, #0891b2); }
+
+/* Chapter cards */
+.chapter-row {
+  display: flex; align-items: center; gap: 1rem;
+  padding: 1rem 1.25rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all var(--transition);
+  margin-bottom: 8px;
+}
+.chapter-row:hover { border-color: var(--amber); box-shadow: var(--shadow); }
+.chapter-row-num {
+  width: 36px; height: 36px;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px; font-weight: 500;
+  flex-shrink: 0;
+}
+.maths-num { background: rgba(37,99,235,0.1); color: #2563eb; }
+.chemistry-num { background: rgba(5,150,105,0.1); color: #059669; }
+.chapter-row-info { flex: 1; }
+.chapter-row-name { font-size: 15px; font-weight: 500; margin-bottom: 2px; }
+.chapter-row-meta { font-size: 12px; color: var(--text-3); }
+.chapter-row-arrow { color: var(--text-3); transition: transform var(--transition); }
+.chapter-row:hover .chapter-row-arrow { transform: translateX(4px); color: var(--amber); }
+
+/* Playlist cards */
+.playlist-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.playlist-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: var(--amber); }
+.playlist-thumb {
+  width: 100%; aspect-ratio: 16/9;
+  background: linear-gradient(135deg, #0d1b3e 0%, #1e3a8a 100%);
+  position: relative;
+  display: flex; align-items: center; justify-content: center;
+}
+.playlist-thumb-inner { text-align: center; }
+.play-btn {
+  width: 52px; height: 52px;
+  background: var(--amber);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; color: #0d1b3e;
+  margin: 0 auto 8px;
+  box-shadow: 0 4px 20px rgba(244,162,52,0.5);
+}
+.playlist-count-label { font-size: 12px; color: rgba(255,255,255,0.6); }
+.playlist-body { padding: 1rem; }
+.playlist-title { font-size: 15px; font-weight: 600; margin-bottom: 4px; line-height: 1.4; }
+.playlist-meta { font-size: 12px; color: var(--text-3); display: flex; align-items: center; gap: 8px; }
+.playlist-actions { display: flex; gap: 6px; margin-top: 10px; }
+
+/* Material cards */
+.material-card {
+  display: flex; align-items: center; gap: 1rem;
+  padding: 1rem 1.25rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-bottom: 8px;
+  transition: all var(--transition);
+}
+.material-card:hover { border-color: var(--amber); }
+.material-icon {
+  width: 44px; height: 44px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; flex-shrink: 0;
+}
+.type-test { background: rgba(220,38,38,0.1); }
+.type-assignment { background: rgba(37,99,235,0.1); }
+.type-solution { background: rgba(5,150,105,0.1); }
+.type-note { background: rgba(124,58,237,0.1); }
+.material-info { flex: 1; }
+.material-title { font-size: 14px; font-weight: 500; margin-bottom: 2px; }
+.material-meta { font-size: 12px; color: var(--text-3); }
+.material-actions { display: flex; gap: 6px; }
+
+/* Stats cards */
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.25rem 1.5rem;
+}
+.stat-card-label { font-size: 12px; font-weight: 500; color: var(--text-3); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+.stat-card-num { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 700; margin-bottom: 4px; }
+.stat-card-sub { font-size: 12px; color: var(--success); }
+.stat-card-icon { font-size: 2rem; opacity: 0.15; float: right; margin-top: -2rem; }
+
+/* Forum */
+.forum-post {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem;
+  margin-bottom: 10px;
+  transition: border-color var(--transition);
+}
+.forum-post:hover { border-color: var(--border); }
+.forum-post-header { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 0.75rem; }
+.forum-post-meta { flex: 1; }
+.forum-post-title { font-size: 15px; font-weight: 600; margin-bottom: 3px; cursor: pointer; }
+.forum-post-title:hover { color: var(--amber-dark); }
+.forum-post-info { font-size: 12px; color: var(--text-3); }
+.forum-post-body { font-size: 14px; color: var(--text-2); line-height: 1.6; margin-bottom: 1rem; }
+.forum-post-footer { display: flex; align-items: center; gap: 10px; }
+.vote-btn {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 5px 10px; border-radius: 6px;
+  font-size: 13px; font-weight: 500;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  color: var(--text-2);
+  transition: all var(--transition); cursor: pointer;
+}
+.vote-btn:hover, .vote-btn.voted { background: rgba(244,162,52,0.12); border-color: var(--amber); color: var(--amber-dark); }
+.resolved-badge { background: rgba(5,150,105,0.12); color: #059669; font-size: 11px; padding: 3px 10px; border-radius: 99px; font-weight: 500; margin-left: auto; }
+.forum-reply {
+  background: var(--surface);
+  border-radius: 10px;
+  padding: 1rem;
+  margin-top: 10px;
+  margin-left: 2rem;
+  border-left: 3px solid var(--border);
+}
+.forum-reply.teacher-reply { border-left-color: var(--amber); }
+
+/* Teacher upload form */
+.upload-zone {
+  border: 2px dashed var(--border);
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all var(--transition);
+  background: var(--surface);
+}
+.upload-zone:hover { border-color: var(--amber); background: rgba(244,162,52,0.04); }
+.upload-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+.upload-text { font-size: 14px; color: var(--text-2); }
+.upload-text span { color: var(--amber); font-weight: 500; }
+
+/* Table */
+.table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.table th { padding: 10px 14px; text-align: left; font-size: 12px; font-weight: 600; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid var(--border); background: var(--surface); }
+.table th:first-child { border-radius: 8px 0 0 8px; }
+.table th:last-child { border-radius: 0 8px 8px 0; }
+.table td { padding: 12px 14px; border-bottom: 1px solid var(--border); color: var(--text); vertical-align: middle; }
+.table tr:last-child td { border-bottom: none; }
+.table tr:hover td { background: var(--surface); }
+
+/* Tabs */
+.tabs { display: flex; gap: 4px; background: var(--surface); border-radius: 10px; padding: 4px; margin-bottom: 1.5rem; }
+.tab-btn {
+  flex: 1; padding: 8px 16px; border-radius: 7px;
+  font-size: 13px; font-weight: 500; color: var(--text-3);
+  background: none; border: none; cursor: pointer;
+  transition: all var(--transition); text-align: center;
+}
+.tab-btn.active { background: var(--card); color: var(--text); box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
+.tab-pane { display: none; }
+.tab-pane.active { display: block; }
+
+/* Progress bar */
+.progress-bar { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; margin-top: 8px; }
+.progress-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, var(--amber), var(--amber-dark)); }
+
+/* Toggle */
+.toggle { position: relative; width: 42px; height: 24px; flex-shrink: 0; }
+.toggle input { opacity: 0; width: 0; height: 0; }
+.toggle-slider {
+  position: absolute; inset: 0;
+  background: var(--border); border-radius: 24px;
+  cursor: pointer; transition: var(--transition);
+}
+.toggle-slider:before {
+  content: ''; position: absolute;
+  width: 18px; height: 18px;
+  left: 3px; top: 3px;
+  background: white; border-radius: 50%;
+  transition: var(--transition);
+}
+.toggle input:checked + .toggle-slider { background: var(--amber); }
+.toggle input:checked + .toggle-slider:before { transform: translateX(18px); }
+
+/* Notification */
+.notif-dot {
+  width: 8px; height: 8px;
+  background: var(--danger);
+  border-radius: 50%;
+  position: absolute; top: 6px; right: 6px;
+}
+
+/* Charts (CSS-based) */
+.bar-chart { display: flex; align-items: flex-end; gap: 8px; height: 120px; }
+.bar-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.bar { width: 100%; border-radius: 4px 4px 0 0; background: var(--amber); min-height: 4px; transition: height 1s cubic-bezier(0.34,1.56,0.64,1); }
+.bar-label { font-size: 10px; color: var(--text-3); text-align: center; }
+
+/* YouTube embed */
+.yt-embed-wrapper {
+  background: #000;
+  border-radius: 12px;
+  overflow: hidden;
+  aspect-ratio: 16/9;
+  position: relative;
+}
+.yt-embed-wrapper iframe {
+  width: 100%; height: 100%;
+  border: none;
+}
+
+/* Breadcrumb */
+.breadcrumb { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text-3); margin-bottom: 1.5rem; }
+.breadcrumb span { cursor: pointer; transition: color var(--transition); }
+.breadcrumb span:hover { color: var(--amber); }
+.breadcrumb-sep { color: var(--border); }
+.breadcrumb .current { color: var(--text); font-weight: 500; cursor: default; }
+
+/* Empty state */
+.empty-state { text-align: center; padding: 4rem 2rem; }
+.empty-icon { font-size: 4rem; margin-bottom: 1rem; opacity: 0.5; }
+.empty-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 600; margin-bottom: 0.5rem; }
+.empty-text { font-size: 14px; color: var(--text-3); }
+
+/* Toast */
+.toast-container { position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 9999; display: flex; flex-direction: column; gap: 8px; }
+.toast {
+  background: var(--navy-2, #1e2d55);
+  color: #fff;
+  padding: 12px 18px;
+  border-radius: 10px;
+  font-size: 13px;
+  display: flex; align-items: center; gap: 8px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  animation: toastIn 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  max-width: 320px;
+}
+[data-theme="dark"] .toast { background: #1a2240; }
+@keyframes toastIn { from{opacity:0;transform:translateX(20px)} to{opacity:1;transform:translateX(0)} }
+.toast-success { border-left: 3px solid #059669; }
+.toast-error { border-left: 3px solid #dc2626; }
+.toast-info { border-left: 3px solid var(--amber); }
+
+/* Dark mode toggle */
+.dark-toggle { display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 8px; background: rgba(255,255,255,0.05); cursor: pointer; width: 100%; border: none; color: rgba(255,255,255,0.55); font-size: 13px; transition: all var(--transition); margin-top: 8px; }
+.dark-toggle:hover { background: rgba(255,255,255,0.1); }
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .grid-3 { grid-template-columns: repeat(2,1fr); }
+  .grid-4 { grid-template-columns: repeat(2,1fr); }
+  .features-grid { grid-template-columns: repeat(2,1fr); }
+}
+@media (max-width: 768px) {
+  .landing-hero { grid-template-columns: 1fr; }
+  .hero-visual { display: none; }
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+  .features-grid { grid-template-columns: 1fr; }
+  .sidebar { transform: translateX(-100%); }
+  .sidebar.open { transform: translateX(0); }
+  .main { margin-left: 0; }
+  .landing-nav { padding: 1rem 1.5rem; }
+  .landing-hero { padding: 3rem 1.5rem; }
+  .hero-stats { flex-wrap: wrap; gap: 1rem; }
+  .search-bar { display: none; }
+  .content { padding: 1rem; }
+}
+
+/* Animations */
+.fade-in { animation: fadeIn 0.4s ease; }
+.slide-up { animation: slideUp 0.35s cubic-bezier(0.34,1.56,0.64,1); }
+
+/* Misc utility */
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+.gap-1 { gap: 0.5rem; }
+.gap-2 { gap: 1rem; }
+.gap-3 { gap: 1.5rem; }
+.mb-1 { margin-bottom: 0.5rem; }
+.mb-2 { margin-bottom: 1rem; }
+.mb-3 { margin-bottom: 1.5rem; }
+.mb-4 { margin-bottom: 2rem; }
+.mt-1 { margin-top: 0.5rem; }
+.mt-2 { margin-top: 1rem; }
+.text-sm { font-size: 13px; }
+.text-muted { color: var(--text-3); }
+.font-serif { font-family: 'Playfair Display', serif; }
+.fw-600 { font-weight: 600; }
+.divider { height: 1px; background: var(--border); margin: 1.5rem 0; }
+.tag { display: inline-block; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 2px 8px; font-size: 12px; font-family: 'JetBrains Mono', monospace; }
+.section-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+.section-head-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 600; }
+.page-title { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; margin-bottom: 0.25rem; }
+.page-sub { font-size: 14px; color: var(--text-3); margin-bottom: 2rem; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════
+     LANDING PAGE
+═══════════════════════════════════ -->
+<div id="landing" class="view active">
+  <div class="landing-bg"></div>
+  <div class="landing-grid"></div>
+
+  <nav class="landing-nav">
+    <div class="logo">
+      <div class="logo-mark">V</div>
+      <div class="logo-text">Vidya<span>lay</span></div>
+    </div>
+    <div class="landing-nav-links">
+      <button class="btn btn-outline" onclick="openAuth('student')">Student Login</button>
+      <button class="btn btn-primary" onclick="openAuth('teacher')">Teacher Access</button>
+    </div>
+  </nav>
+
+  <div class="landing-hero">
+    <div class="hero-content">
+      <div class="hero-eyebrow">🎯 Expert Maths & Chemistry Tuition</div>
+      <h1 class="hero-title">Learn. Practise.<br><span>Excel.</span></h1>
+      <p class="hero-subtitle">Access carefully curated video playlists, tests, and solutions — all organised chapter-by-chapter. Join thousands of students mastering Maths and Chemistry.</p>
+      <div class="hero-cta">
+        <button class="btn btn-primary btn-lg" onclick="openAuth('student')">Start Learning →</button>
+        <button class="btn btn-outline btn-lg" onclick="scrollFeatures()">See Features</button>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-item"><div class="stat-num">2</div><div class="stat-label">Subjects</div></div>
+        <div class="stat-item"><div class="stat-num">40+</div><div class="stat-label">Chapters</div></div>
+        <div class="stat-item"><div class="stat-num">200+</div><div class="stat-label">Video Lectures</div></div>
+        <div class="stat-item"><div class="stat-num">1,200+</div><div class="stat-label">Students</div></div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-card">
+        <div class="hero-card-header">
+          <div class="hero-card-icon" style="background:rgba(37,99,235,0.2)">📐</div>
+          <div>
+            <div class="hero-card-title">Mathematics — Class 12</div>
+            <div class="hero-card-meta">16 chapters · 84 playlists</div>
+          </div>
+        </div>
+        <div class="chapter-list">
+          <div class="chapter-item"><span class="chapter-num">CH 01</span>Relations & Functions<span class="chapter-videos">8 videos</span></div>
+          <div class="chapter-item"><span class="chapter-num">CH 02</span>Inverse Trigonometry<span class="chapter-videos">12 videos</span></div>
+          <div class="chapter-item"><span class="chapter-num">CH 03</span>Matrices<span class="chapter-videos">10 videos</span></div>
+          <div class="chapter-item"><span class="chapter-num">CH 04</span>Determinants<span class="chapter-videos">15 videos</span></div>
+          <div class="chapter-item"><span class="chapter-num">CH 05</span>Continuity & Differentiability<span class="chapter-videos">18 videos</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="features-section" id="features">
+    <div class="section-label">Everything You Need</div>
+    <div class="section-title">Built for Students,<br>Designed for Results</div>
+    <div class="section-subtitle">A complete learning ecosystem in one place</div>
+    <div class="features-grid">
+      <div class="feature-card"><div class="feature-icon">🎬</div><h3 class="feature-title">Chapter-wise Playlists</h3><p class="feature-desc">Every YouTube playlist organised by chapter and topic. No more searching — just click and learn.</p></div>
+      <div class="feature-card"><div class="feature-icon">📝</div><h3 class="feature-title">Tests & Assignments</h3><p class="feature-desc">Practice tests, DPPs, and full solutions uploaded by your teacher, accessible anytime.</p></div>
+      <div class="feature-card"><div class="feature-icon">💬</div><h3 class="feature-title">Doubt Forum</h3><p class="feature-desc">Post your doubts, get answers from classmates and your teacher. Upvote helpful responses.</p></div>
+      <div class="feature-card"><div class="feature-icon">🔍</div><h3 class="feature-title">Instant Search</h3><p class="feature-desc">Find any chapter, topic, or resource instantly with our powerful search.</p></div>
+      <div class="feature-card"><div class="feature-icon">🔖</div><h3 class="feature-title">Bookmarks</h3><p class="feature-desc">Save your favourite playlists and pick up right where you left off.</p></div>
+      <div class="feature-card"><div class="feature-icon">📊</div><h3 class="feature-title">Teacher Analytics</h3><p class="feature-desc">Track student engagement, most-watched topics, and content performance in real-time.</p></div>
+    </div>
+  </div>
+  <div class="landing-footer">© 2025 Vidyalay · Made with ❤ for students · Contact: teacher@vidyalay.in</div>
+</div>
+
+<!-- ═══════════════════════════════════
+     AUTH MODAL
+═══════════════════════════════════ -->
+<div class="modal-overlay" id="authModal">
+  <div class="modal">
+    <div class="modal-logo">
+      <div class="logo-mark">V</div>
+      <div class="logo-text">Vidya<span style="color:var(--amber)">lay</span></div>
+    </div>
+
+    <!-- Step 1: Role select + phone -->
+    <div id="authStep1">
+      <h2 class="auth-title">Welcome back! 👋</h2>
+      <p class="auth-sub">Sign in to continue learning</p>
+      <div class="demo-roles">
+        <button class="role-btn active" id="roleStudent" onclick="selectRole('student')">🎓 Student</button>
+        <button class="role-btn" id="roleTeacher" onclick="selectRole('teacher')">👨‍🏫 Teacher</button>
+        <button class="role-btn" id="roleAdmin" onclick="selectRole('admin')">🛡 Admin</button>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Phone Number</label>
+        <div class="phone-input">
+          <div class="phone-prefix">🇮🇳 +91</div>
+          <input type="tel" class="form-control" id="phoneInput" placeholder="98765 43210" maxlength="10">
+        </div>
+      </div>
+      <button class="btn btn-primary btn-full" onclick="sendOTP()">Send OTP →</button>
+      <p class="auth-hint mt-2">By continuing, you agree to our Terms of Service</p>
+      <p class="auth-hint mt-1" style="cursor:pointer;color:var(--text-3)" onclick="closeAuth()">✕ Cancel</p>
+    </div>
+
+    <!-- Step 2: OTP verify -->
+    <div id="authStep2" style="display:none">
+      <h2 class="auth-title">Verify OTP 🔐</h2>
+      <p class="auth-sub" id="otpSentTo">OTP sent to +91 ──────────</p>
+      <div class="form-group">
+        <label class="form-label">Enter 6-digit OTP</label>
+        <div class="otp-grid">
+          <input type="text" class="otp-box" maxlength="1" oninput="otpInput(this,0)">
+          <input type="text" class="otp-box" maxlength="1" oninput="otpInput(this,1)">
+          <input type="text" class="otp-box" maxlength="1" oninput="otpInput(this,2)">
+          <input type="text" class="otp-box" maxlength="1" oninput="otpInput(this,3)">
+          <input type="text" class="otp-box" maxlength="1" oninput="otpInput(this,4)">
+          <input type="text" class="otp-box" maxlength="1" oninput="otpInput(this,5)">
+        </div>
+      </div>
+      <p class="auth-hint" style="margin-bottom:1rem">Demo OTP: <strong style="font-family:'JetBrains Mono',monospace;color:var(--amber)">123456</strong></p>
+      <button class="btn btn-primary btn-full" onclick="verifyOTP()">Verify & Login →</button>
+      <p class="auth-hint mt-2"><a onclick="goBackStep1()">← Change number</a> · <span class="timer" id="otpTimer">⏱ 04:59</span></p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     TOAST CONTAINER
+═══════════════════════════════════ -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- ═══════════════════════════════════
+     APP SHELL
+═══════════════════════════════════ -->
+<div id="app">
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-mark">V</div>
+      <div class="logo-text" style="color:#fff">Vidya<span style="color:var(--amber)">lay</span></div>
+    </div>
+    <nav class="sidebar-nav" id="sidebarNav">
+      <!-- filled by JS -->
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-card">
+        <div class="avatar" id="sidebarAvatar">S</div>
+        <div class="user-info">
+          <div class="user-name" id="sidebarUserName">Student</div>
+          <div class="user-role" id="sidebarUserRole">Student</div>
+        </div>
+      </div>
+      <button class="dark-toggle" onclick="toggleDark()">
+        <span id="darkIcon">🌙</span>
+        <span id="darkLabel">Dark Mode</span>
+        <label class="toggle" style="margin-left:auto" onclick="event.stopPropagation()">
+          <input type="checkbox" id="darkToggleCheck" onchange="toggleDark()">
+          <span class="toggle-slider"></span>
+        </label>
+      </button>
+      <button class="nav-item" style="margin-top:4px;color:rgba(255,255,255,0.4)" onclick="logout()">
+        <span class="nav-icon">🚪</span> Logout
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <div class="topbar">
+      <button class="btn-icon" id="menuBtn" onclick="toggleSidebar()" style="display:none">☰</button>
+      <div class="topbar-title" id="topbarTitle">Dashboard</div>
+      <div class="search-bar">
+        <span style="color:var(--text-3)">🔍</span>
+        <input type="text" placeholder="Search topics, chapters..." id="globalSearch" oninput="globalSearchFn(this.value)">
+      </div>
+      <div style="position:relative">
+        <button class="btn-icon" onclick="showPage('notifications')" id="notifBtn">🔔</button>
+        <div class="notif-dot" id="notifDot" style="display:none"></div>
+      </div>
+      <button class="btn-icon" onclick="showPage('profile')">
+        <div class="avatar" id="topbarAvatar" style="width:30px;height:30px;font-size:12px">S</div>
+      </button>
+    </div>
+
+    <div class="content">
+      <!-- Pages rendered here by JS -->
+      <div id="pageContainer"></div>
+    </div>
+  </main>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+//  DATA
+// ═══════════════════════════════════════════════════════
+const DATA = {
+  subjects: [
+    {
+      id: 'maths', name: 'Mathematics', emoji: '📐', cls: 'maths',
+      desc: 'Class 11 & 12 complete syllabus',
+      chapters: [
+        { id: 'm1', num: '01', name: 'Relations & Functions', playlists: 2, materials: 3 },
+        { id: 'm2', num: '02', name: 'Inverse Trigonometric Functions', playlists: 2, materials: 2 },
+        { id: 'm3', num: '03', name: 'Matrices', playlists: 1, materials: 3 },
+        { id: 'm4', num: '04', name: 'Determinants', playlists: 2, materials: 4 },
+        { id: 'm5', num: '05', name: 'Continuity & Differentiability', playlists: 3, materials: 3 },
+        { id: 'm6', num: '06', name: 'Application of Derivatives', playlists: 2, materials: 5 },
+        { id: 'm7', num: '07', name: 'Integrals', playlists: 4, materials: 4 },
+        { id: 'm8', num: '08', name: 'Application of Integrals', playlists: 1, materials: 2 },
+        { id: 'm9', num: '09', name: 'Differential Equations', playlists: 2, materials: 3 },
+        { id: 'm10', num: '10', name: 'Vector Algebra', playlists: 2, materials: 2 },
+        { id: 'm11', num: '11', name: 'Three Dimensional Geometry', playlists: 2, materials: 3 },
+        { id: 'm12', num: '12', name: 'Linear Programming', playlists: 1, materials: 2 },
+      ]
+    },
+    {
+      id: 'chemistry', name: 'Chemistry', emoji: '⚗️', cls: 'chemistry',
+      desc: 'Class 11 & 12 complete syllabus',
+      chapters: [
+        { id: 'c1', num: '01', name: 'The Solid State', playlists: 2, materials: 3 },
+        { id: 'c2', num: '02', name: 'Solutions', playlists: 2, materials: 3 },
+        { id: 'c3', num: '03', name: 'Electrochemistry', playlists: 3, materials: 4 },
+        { id: 'c4', num: '04', name: 'Chemical Kinetics', playlists: 2, materials: 3 },
+        { id: 'c5', num: '05', name: 'Surface Chemistry', playlists: 1, materials: 2 },
+        { id: 'c6', num: '06', name: 'General Principles of Isolation', playlists: 1, materials: 2 },
+        { id: 'c7', num: '07', name: 'p-Block Elements', playlists: 3, materials: 4 },
+        { id: 'c8', num: '08', name: 'd and f Block Elements', playlists: 2, materials: 3 },
+        { id: 'c9', num: '09', name: 'Coordination Compounds', playlists: 2, materials: 3 },
+        { id: 'c10', num: '10', name: 'Haloalkanes and Haloarenes', playlists: 2, materials: 3 },
+        { id: 'c11', num: '11', name: 'Alcohols, Phenols and Ethers', playlists: 2, materials: 3 },
+        { id: 'c12', num: '12', name: 'Aldehydes, Ketones & Carboxylic Acids', playlists: 3, materials: 4 },
+      ]
+    }
+  ],
+  playlists: {
+    'm1': [
+      { id: 'p1', title: 'Relations & Functions — Complete Theory', ytId: 'PLgNUCz66KaWR2LMFKc4E9nOm-0Zf9KjBT', videos: 8, views: 1240, bookmarked: false },
+      { id: 'p2', title: 'Relations & Functions — PYQ Practice', ytId: 'PLgNUCz66KaWR2LMFKc4E9nOm-0Zf9KjBT', videos: 5, views: 980, bookmarked: true },
+    ],
+    'm7': [
+      { id: 'p7a', title: 'Integration — Basic to Advanced', ytId: 'PLgNUCz66KaWR2LMFKc4E9nOm-0Zf9KjBT', videos: 18, views: 3200, bookmarked: false },
+      { id: 'p7b', title: 'Integration by Parts', ytId: 'PLgNUCz66KaWR2LMFKc4E9nOm-0Zf9KjBT', videos: 8, views: 2100, bookmarked: true },
+      { id: 'p7c', title: 'Definite Integrals', ytId: 'PLgNUCz66KaWR2LMFKc4E9nOm-0Zf9KjBT', videos: 10, views: 1800, bookmarked: false },
+    ],
+    'c3': [
+      { id: 'pc3a', title: 'Electrochemistry — Full Chapter', ytId: 'PLgNUCz66KaWR2LMFKc4E9nOm-0Zf9KjBT', videos: 14, views: 2400, bookmarked: false },
+      { id: 'pc3b', title: 'Nernst Equation & Numericals', ytId: 'PLgNUCz66KaWR2LMFKc4E9nOm-0Zf9KjBT', videos: 6, views: 1600, bookmarked: false },
+    ],
+  },
+  materials: {
+    'm1': [
+      { id: 'mat1', type: 'TEST', title: 'Relations & Functions — Unit Test 1', date: '12 Jan 2025', size: '245 KB' },
+      { id: 'mat2', type: 'SOLUTION', title: 'Unit Test 1 — Solutions', date: '14 Jan 2025', size: '180 KB' },
+      { id: 'mat3', type: 'ASSIGNMENT', title: 'DPP — Relations', date: '08 Jan 2025', size: '120 KB' },
+    ],
+    'm7': [
+      { id: 'mat7a', type: 'TEST', title: 'Integration — Chapter Test', date: '20 Feb 2025', size: '312 KB' },
+      { id: 'mat7b', type: 'SOLUTION', title: 'Integration Test — Full Solutions', date: '22 Feb 2025', size: '420 KB' },
+      { id: 'mat7c', type: 'ASSIGNMENT', title: 'DPP Integration Set 1', date: '15 Feb 2025', size: '98 KB' },
+      { id: 'mat7d', type: 'NOTE', title: 'Integration Formulae Sheet', date: '10 Feb 2025', size: '65 KB' },
+    ],
+    'c3': [
+      { id: 'matc3a', type: 'TEST', title: 'Electrochemistry Test Paper', date: '5 Mar 2025', size: '280 KB' },
+      { id: 'matc3b', type: 'SOLUTION', title: 'Electrochemistry Test Solutions', date: '7 Mar 2025', size: '350 KB' },
+      { id: 'matc3c', type: 'NOTE', title: 'Electrochemistry Formula Sheet', date: '1 Mar 2025', size: '75 KB' },
+    ],
+  },
+  forum: [
+    { id: 'f1', author: 'Priya Sharma', initials: 'PS', role: 'student', subject: 'Maths', chapter: 'Integration', title: 'How to solve ∫x²·eˣ dx using IBP?', body: 'I keep getting confused about which function to take as u and which as dv when applying integration by parts. Can someone explain a foolproof method?', upvotes: 12, voted: false, resolved: true, time: '2 hours ago',
+      replies: [
+        { author: 'Rahul Sir', initials: 'RS', role: 'teacher', body: 'Great question! Use ILATE rule — Inverse trig, Logarithm, Algebraic, Trig, Exponential. Take u = x² (Algebraic) and dv = eˣ dx. Then du = 2x dx and v = eˣ. Apply IBP twice!', time: '1 hour ago' },
+        { author: 'Arjun Mehta', initials: 'AM', role: 'student', body: 'The ILATE trick really helped me too! Practise with ∫x·sinx dx first to get the hang of it.', time: '45 min ago' }
+      ]
+    },
+    { id: 'f2', author: 'Karan Verma', initials: 'KV', role: 'student', subject: 'Chemistry', chapter: 'Electrochemistry', title: 'Difference between EMF and terminal voltage?', body: 'My textbook says EMF is maximum potential difference but terminal voltage is less. Why does this happen and what causes internal resistance?', upvotes: 8, voted: false, resolved: false, time: '5 hours ago',
+      replies: [
+        { author: 'Ananya Singh', initials: 'AS', role: 'student', body: 'Internal resistance is the resistance of the electrolyte inside the cell. When current flows, some voltage is lost across this resistance, so terminal voltage = EMF - I·r', time: '3 hours ago' }
+      ]
+    },
+    { id: 'f3', author: 'Sneha Patel', initials: 'SP', role: 'student', subject: 'Maths', chapter: 'Matrices', title: 'Is AB = BA always true for matrices?', body: 'In normal multiplication 3×4 = 4×3. Is matrix multiplication also commutative? My notes say no but I want to understand why.', upvotes: 5, voted: false, resolved: true, time: '1 day ago',
+      replies: [
+        { author: 'Rahul Sir', initials: 'RS', role: 'teacher', body: 'Matrix multiplication is NOT commutative in general! AB ≠ BA. Simple example: Let A = [[1,2],[3,4]] and B = [[0,1],[1,0]]. Compute AB and BA — you\'ll get different results. It only works for special matrices like identity matrix.', time: '22 hours ago' }
+      ]
+    },
+    { id: 'f4', author: 'Vikram Nair', initials: 'VN', role: 'student', subject: 'Chemistry', chapter: 'Solid State', title: 'How to calculate packing efficiency of BCC?', body: 'I understand FCC packing efficiency is 74% but I\'m struggling to derive the BCC value. Can anyone show the calculation step by step?', upvotes: 3, voted: false, resolved: false, time: '2 days ago', replies: [] },
+  ],
+  notifications: [
+    { id: 'n1', icon: '📹', title: 'New Playlist Added', body: 'Definite Integrals — 10 new videos uploaded', time: '1 hour ago', read: false },
+    { id: 'n2', icon: '📝', title: 'New Test Posted', body: 'Electrochemistry Test Paper is now available', time: '3 hours ago', read: false },
+    { id: 'n3', icon: '💬', title: 'Reply on your doubt', body: 'Rahul Sir replied to your question about IBP', time: '1 day ago', read: true },
+    { id: 'n4', icon: '📄', title: 'Solution Uploaded', body: 'Integration Test Full Solutions now available', time: '2 days ago', read: true },
+  ]
+};
+
+// ═══════════════════════════════════════════════════════
+//  APP STATE
+// ═══════════════════════════════════════════════════════
+const state = {
+  role: 'student',
+  user: null,
+  currentPage: 'home',
+  currentSubject: null,
+  currentChapter: null,
+  currentPlaylist: null,
+  darkMode: false,
+  bookmarks: ['p2','p7b'],
+  forumData: [...DATA.forum],
+  notifRead: false,
+  otpTimer: null,
+  selectedRole: 'student',
+  uploadedMaterials: [],
+  uploadedPlaylists: [],
+};
+
+// ═══════════════════════════════════════════════════════
+//  AUTH
+// ═══════════════════════════════════════════════════════
+function openAuth(role) {
+  selectRole(role);
+  document.getElementById('authModal').classList.add('open');
+}
+function closeAuth() { document.getElementById('authModal').classList.remove('open'); }
+function selectRole(role) {
+  state.selectedRole = role;
+  ['Student','Teacher','Admin'].forEach(r => {
+    document.getElementById('role'+r)?.classList.remove('active');
+  });
+  document.getElementById('role'+role.charAt(0).toUpperCase()+role.slice(1))?.classList.add('active');
+}
+function sendOTP() {
+  const phone = document.getElementById('phoneInput').value.trim();
+  if (phone.length < 10) { showToast('Enter a valid 10-digit number','error'); return; }
+  document.getElementById('otpSentTo').textContent = `OTP sent to +91 ${phone}`;
+  document.getElementById('authStep1').style.display = 'none';
+  document.getElementById('authStep2').style.display = 'block';
+  startOTPTimer();
+  showToast('OTP sent! Use 123456 for demo','info');
+}
+function startOTPTimer() {
+  let secs = 299;
+  state.otpTimer = setInterval(() => {
+    const m = String(Math.floor(secs/60)).padStart(2,'0');
+    const s = String(secs%60).padStart(2,'0');
+    document.getElementById('otpTimer').innerHTML = `⏱ ${m}:${s}`;
+    if (--secs < 0) { clearInterval(state.otpTimer); document.getElementById('otpTimer').innerHTML = '<a onclick="goBackStep1()" style="cursor:pointer">Resend OTP</a>'; }
+  }, 1000);
+}
+function otpInput(el, idx) {
+  if (el.value.length === 1) {
+    const boxes = document.querySelectorAll('.otp-box');
+    if (idx < 5) boxes[idx+1].focus();
+    else verifyOTP();
+  }
+}
+function verifyOTP() {
+  const boxes = document.querySelectorAll('.otp-box');
+  const otp = Array.from(boxes).map(b=>b.value).join('');
+  if (otp === '123456') {
+    clearInterval(state.otpTimer);
+    closeAuth();
+    loginAs(state.selectedRole);
+  } else {
+    showToast('Incorrect OTP. Try 123456','error');
+    boxes.forEach(b=>{ b.value=''; b.style.borderColor='var(--danger)'; });
+    setTimeout(()=>boxes.forEach(b=>b.style.borderColor=''),1500);
+    boxes[0].focus();
+  }
+}
+function goBackStep1() {
+  clearInterval(state.otpTimer);
+  document.getElementById('authStep1').style.display='block';
+  document.getElementById('authStep2').style.display='none';
+  document.querySelectorAll('.otp-box').forEach(b=>b.value='');
+}
+function loginAs(role) {
+  state.role = role;
+  const names = { student:'Arjun Mehta', teacher:'Rahul Sir', admin:'Admin' };
+  const phones = { student:'+91 98765 43210', teacher:'+91 87654 32109', admin:'+91 76543 21098' };
+  state.user = { name: names[role], phone: phones[role], role };
+  document.getElementById('landing').classList.remove('active');
+  document.getElementById('app').classList.add('visible');
+  buildSidebar();
+  updateUserUI();
+  showPage('home');
+  showToast(`Welcome, ${state.user.name}! 👋`,'success');
+  document.getElementById('notifDot').style.display = 'block';
+  document.getElementById('menuBtn').style.display = '';
+}
+function logout() {
+  state.role = 'student';
+  state.user = null;
+  document.getElementById('app').classList.remove('visible');
+  document.getElementById('landing').classList.add('active');
+  showToast('Logged out successfully','info');
+}
+function updateUserUI() {
+  const initials = state.user.name.split(' ').map(n=>n[0]).join('');
+  document.getElementById('sidebarAvatar').textContent = initials;
+  document.getElementById('topbarAvatar').textContent = initials;
+  document.getElementById('sidebarUserName').textContent = state.user.name;
+  document.getElementById('sidebarUserRole').textContent = state.user.role.charAt(0).toUpperCase()+state.user.role.slice(1);
+}
+
+// ═══════════════════════════════════════════════════════
+//  SIDEBAR BUILDER
+// ═══════════════════════════════════════════════════════
+function buildSidebar() {
+  const nav = document.getElementById('sidebarNav');
+  const studentNav = `
+    <div class="nav-section-label">Main</div>
+    <button class="nav-item active" onclick="showPage('home')" data-page="home"><span class="nav-icon">🏠</span> Dashboard</button>
+    <button class="nav-item" onclick="showPage('subjects')" data-page="subjects"><span class="nav-icon">📚</span> Subjects</button>
+    <button class="nav-item" onclick="showPage('forum')" data-page="forum"><span class="nav-icon">💬</span> Doubt Forum <span class="nav-badge">4</span></button>
+    <button class="nav-item" onclick="showPage('bookmarks')" data-page="bookmarks"><span class="nav-icon">🔖</span> Bookmarks</button>
+    <div class="nav-section-label" style="margin-top:1rem">Account</div>
+    <button class="nav-item" onclick="showPage('notifications')" data-page="notifications"><span class="nav-icon">🔔</span> Notifications</button>
+    <button class="nav-item" onclick="showPage('profile')" data-page="profile"><span class="nav-icon">👤</span> Profile</button>
+  `;
+  const teacherNav = `
+    <div class="nav-section-label">Dashboard</div>
+    <button class="nav-item active" onclick="showPage('home')" data-page="home"><span class="nav-icon">📊</span> Analytics</button>
+    <button class="nav-item" onclick="showPage('teacher-playlists')" data-page="teacher-playlists"><span class="nav-icon">🎬</span> Manage Playlists</button>
+    <button class="nav-item" onclick="showPage('teacher-materials')" data-page="teacher-materials"><span class="nav-icon">📁</span> Manage Materials</button>
+    <button class="nav-item" onclick="showPage('teacher-forum')" data-page="teacher-forum"><span class="nav-icon">💬</span> Student Doubts <span class="nav-badge">2</span></button>
+    <div class="nav-section-label" style="margin-top:1rem">Students</div>
+    <button class="nav-item" onclick="showPage('subjects')" data-page="subjects"><span class="nav-icon">📚</span> View Content</button>
+    <button class="nav-item" onclick="showPage('notifications')" data-page="notifications"><span class="nav-icon">🔔</span> Notifications</button>
+    <button class="nav-item" onclick="showPage('profile')" data-page="profile"><span class="nav-icon">👤</span> Profile</button>
+  `;
+  const adminNav = `
+    <div class="nav-section-label">Admin Panel</div>
+    <button class="nav-item active" onclick="showPage('home')" data-page="home"><span class="nav-icon">📊</span> Overview</button>
+    <button class="nav-item" onclick="showPage('admin-users')" data-page="admin-users"><span class="nav-icon">👥</span> Users</button>
+    <button class="nav-item" onclick="showPage('admin-content')" data-page="admin-content"><span class="nav-icon">📁</span> Content</button>
+    <button class="nav-item" onclick="showPage('teacher-forum')" data-page="teacher-forum"><span class="nav-icon">🛡</span> Moderation</button>
+    <button class="nav-item" onclick="showPage('subjects')" data-page="subjects"><span class="nav-icon">📚</span> Subjects</button>
+    <button class="nav-item" onclick="showPage('profile')" data-page="profile"><span class="nav-icon">👤</span> Profile</button>
+  `;
+  nav.innerHTML = { student: studentNav, teacher: teacherNav, admin: adminNav }[state.role] || studentNav;
+}
+function setActiveNav(page) {
+  document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
+  document.querySelector(`[data-page="${page}"]`)?.classList.add('active');
+}
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+}
+
+// ═══════════════════════════════════════════════════════
+//  PAGE ROUTER
+// ═══════════════════════════════════════════════════════
+function showPage(page, ...args) {
+  state.currentPage = page;
+  setActiveNav(page);
+  const titles = {
+    home: state.role === 'student' ? 'My Dashboard' : state.role === 'teacher' ? 'Teacher Dashboard' : 'Admin Dashboard',
+    subjects: 'Subjects', forum: 'Doubt Forum', bookmarks: 'My Bookmarks',
+    'teacher-playlists': 'Manage Playlists', 'teacher-materials': 'Manage Materials',
+    'teacher-forum': 'Student Doubts', notifications: 'Notifications',
+    profile: 'My Profile', 'admin-users': 'User Management', 'admin-content': 'Content Overview',
+    subject: 'Subject', chapter: 'Chapter', 'watch-playlist': 'Now Playing',
+  };
+  document.getElementById('topbarTitle').textContent = titles[page] || page;
+  const container = document.getElementById('pageContainer');
+  container.className = 'fade-in';
+  void container.offsetWidth;
+
+  const pages = {
+    home: state.role === 'teacher' ? renderTeacherHome : state.role === 'admin' ? renderAdminHome : renderStudentHome,
+    subjects: renderSubjects,
+    subject: () => renderSubject(...args),
+    chapter: () => renderChapter(...args),
+    'watch-playlist': () => renderWatchPlaylist(...args),
+    forum: renderForum,
+    'teacher-forum': renderForum,
+    bookmarks: renderBookmarks,
+    'teacher-playlists': renderTeacherPlaylists,
+    'teacher-materials': renderTeacherMaterials,
+    notifications: renderNotifications,
+    profile: renderProfile,
+    'admin-users': renderAdminUsers,
+    'admin-content': renderAdminContent,
+  };
+  container.innerHTML = (pages[page] || renderStudentHome)();
+  bindPageEvents();
+  if(window.innerWidth < 768) document.getElementById('sidebar').classList.remove('open');
+}
+
+// ═══════════════════════════════════════════════════════
+//  PAGE RENDERERS
+// ═══════════════════════════════════════════════════════
+function renderStudentHome() {
+  const unread = DATA.notifications.filter(n=>!n.read).length;
+  return `
+  <h1 class="page-title">Good morning, ${state.user.name.split(' ')[0]}! ☀️</h1>
+  <p class="page-sub">Keep up the momentum — you're doing great.</p>
+
+  <div class="grid grid-4 mb-4">
+    <div class="stat-card"><div class="stat-card-label">Playlists Watched</div><div class="stat-card-num">24</div><div class="stat-card-sub">↑ 3 this week</div><div class="stat-card-icon">🎬</div></div>
+    <div class="stat-card"><div class="stat-card-label">Tests Attempted</div><div class="stat-card-num">8</div><div class="stat-card-sub">↑ 2 this week</div><div class="stat-card-icon">📝</div></div>
+    <div class="stat-card"><div class="stat-card-label">Bookmarks</div><div class="stat-card-num">${state.bookmarks.length}</div><div class="stat-card-sub">Saved playlists</div><div class="stat-card-icon">🔖</div></div>
+    <div class="stat-card"><div class="stat-card-label">Doubts Posted</div><div class="stat-card-num">3</div><div class="stat-card-sub">1 resolved today</div><div class="stat-card-icon">💬</div></div>
+  </div>
+
+  <div class="grid grid-2 gap-2">
+    <div>
+      <div class="section-head mb-2"><div class="section-head-title">Continue Learning</div><button class="btn btn-ghost btn-sm" onclick="showPage('subjects')">View All →</button></div>
+      ${recentPlaylistsHTML()}
+    </div>
+    <div>
+      <div class="section-head mb-2"><div class="section-head-title">Recent Notifications</div><button class="btn btn-ghost btn-sm" onclick="showPage('notifications')">View All →</button></div>
+      ${DATA.notifications.slice(0,3).map(n=>`
+      <div class="material-card" style="margin-bottom:8px">
+        <div class="material-icon" style="font-size:1.4rem;background:var(--surface)">${n.icon}</div>
+        <div class="material-info"><div class="material-title">${n.title}</div><div class="material-meta">${n.body} · ${n.time}</div></div>
+        ${!n.read ? '<span class="badge badge-amber">New</span>' : ''}
+      </div>`).join('')}
+      <div class="divider"></div>
+      <div class="section-head mb-2"><div class="section-head-title">Recent Doubts</div><button class="btn btn-ghost btn-sm" onclick="showPage('forum')">Forum →</button></div>
+      ${DATA.forum.slice(0,2).map(p=>`
+      <div class="forum-post" style="margin-bottom:8px;cursor:pointer" onclick="showPage('forum')">
+        <div style="font-size:14px;font-weight:600;margin-bottom:4px">${p.title}</div>
+        <div style="font-size:12px;color:var(--text-3)">${p.author} · ${p.subject} · ${p.time} · ▲ ${p.upvotes} upvotes ${p.resolved?'· <span class="resolved-badge">Resolved ✓</span>':''}</div>
+      </div>`).join('')}
+    </div>
+  </div>`;
+}
+function recentPlaylistsHTML() {
+  const pl = [
+    { title:'Integration — Basic to Advanced', chapter:'Integrals', subject:'Maths', videos:18, progress:65 },
+    { title:'Electrochemistry — Full Chapter', chapter:'Electrochemistry', subject:'Chemistry', videos:14, progress:30 },
+  ];
+  return pl.map(p=>`
+  <div class="card card-sm mb-2" style="cursor:pointer">
+    <div style="display:flex;align-items:center;gap:12px">
+      <div style="width:48px;height:48px;border-radius:10px;background:linear-gradient(135deg,#0d1b3e,#1e3a8a);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0">▶️</div>
+      <div style="flex:1">
+        <div style="font-size:14px;font-weight:600;margin-bottom:2px">${p.title}</div>
+        <div style="font-size:12px;color:var(--text-3)">${p.subject} · ${p.chapter} · ${p.videos} videos</div>
+        <div class="progress-bar mt-1"><div class="progress-fill" style="width:${p.progress}%"></div></div>
+        <div style="font-size:11px;color:var(--text-3);margin-top:2px">${p.progress}% complete</div>
+      </div>
+    </div>
+  </div>`).join('');
+}
+
+function renderTeacherHome() {
+  return `
+  <h1 class="page-title">Analytics Dashboard 📊</h1>
+  <p class="page-sub">Overview of your content performance and student engagement.</p>
+  <div class="grid grid-4 mb-4">
+    <div class="stat-card"><div class="stat-card-label">Total Students</div><div class="stat-card-num">1,248</div><div class="stat-card-sub" style="color:var(--success)">↑ 43 this month</div><div class="stat-card-icon">👥</div></div>
+    <div class="stat-card"><div class="stat-card-label">Active This Week</div><div class="stat-card-num">387</div><div class="stat-card-sub" style="color:var(--success)">↑ 12% vs last week</div><div class="stat-card-icon">🔥</div></div>
+    <div class="stat-card"><div class="stat-card-label">Total Playlists</div><div class="stat-card-num">48</div><div class="stat-card-sub">Across 24 chapters</div><div class="stat-card-icon">🎬</div></div>
+    <div class="stat-card"><div class="stat-card-label">Total Views</div><div class="stat-card-num">28.4K</div><div class="stat-card-sub" style="color:var(--success)">↑ 2.1K this week</div><div class="stat-card-icon">👁</div></div>
+  </div>
+
+  <div class="grid grid-2 gap-2 mb-4">
+    <div class="card">
+      <div class="card-title mb-3">Views This Week</div>
+      <div class="bar-chart" id="weekChart">
+        ${['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map((d,i)=>{
+          const h = [55,72,48,85,90,62,38][i];
+          return `<div class="bar-item"><div class="bar" style="height:${h}%" title="${[420,580,360,680,720,490,290][i]} views"></div><div class="bar-label">${d}</div></div>`;
+        }).join('')}
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title mb-3">Top Playlists</div>
+      ${[
+        {name:'Integration — Basic to Advanced',views:'3,200',sub:'Maths'},
+        {name:'Electrochemistry — Full Chapter',views:'2,400',sub:'Chemistry'},
+        {name:'Integration by Parts',views:'2,100',sub:'Maths'},
+        {name:'Nernst Equation & Numericals',views:'1,600',sub:'Chemistry'},
+        {name:'Definite Integrals',views:'1,800',sub:'Maths'},
+      ].map((p,i)=>`
+      <div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border)">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--amber);min-width:20px">#${i+1}</span>
+        <div style="flex:1"><div style="font-size:13px;font-weight:500">${p.name}</div><div style="font-size:11px;color:var(--text-3)">${p.sub}</div></div>
+        <span style="font-size:13px;font-weight:600">${p.views}</span>
+      </div>`).join('')}
+    </div>
+  </div>
+
+  <div class="grid grid-2 gap-2">
+    <div class="card">
+      <div class="card-title mb-3">Subject Breakdown</div>
+      ${[{sub:'Mathematics',pct:62,col:'#2563eb'},{sub:'Chemistry',pct:38,col:'#059669'}].map(s=>`
+      <div style="margin-bottom:12px">
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:13px;font-weight:500">${s.sub}</span><span style="font-size:13px;font-weight:600">${s.pct}%</span></div>
+        <div class="progress-bar"><div style="width:${s.pct}%;height:100%;border-radius:3px;background:${s.col}"></div></div>
+      </div>`).join('')}
+      <div style="margin-top:1rem;display:flex;gap:12px">
+        <div><div style="font-size:11px;color:var(--text-3)">Materials Uploaded</div><div style="font-size:20px;font-weight:700;font-family:'Playfair Display',serif">84</div></div>
+        <div><div style="font-size:11px;color:var(--text-3)">Downloads</div><div style="font-size:20px;font-weight:700;font-family:'Playfair Display',serif">5.2K</div></div>
+        <div><div style="font-size:11px;color:var(--text-3)">Forum Posts</div><div style="font-size:20px;font-weight:700;font-family:'Playfair Display',serif">142</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title mb-3">Unresolved Doubts</div>
+      ${DATA.forum.filter(p=>!p.resolved).map(p=>`
+      <div class="forum-post" style="margin-bottom:8px;cursor:pointer" onclick="showPage('teacher-forum')">
+        <div style="font-size:13px;font-weight:600;margin-bottom:3px">${p.title}</div>
+        <div style="font-size:11px;color:var(--text-3)">${p.author} · ${p.subject} · ${p.time}</div>
+        <div style="font-size:12px;color:var(--text-2);margin-top:4px">${p.body.substring(0,80)}...</div>
+      </div>`).join('')}
+      <button class="btn btn-primary btn-sm mt-2" onclick="showPage('teacher-forum')">View All Doubts →</button>
+    </div>
+  </div>`;
+}
+
+function renderAdminHome() {
+  return `
+  <h1 class="page-title">Admin Overview 🛡</h1>
+  <p class="page-sub">Platform health and moderation dashboard.</p>
+  <div class="grid grid-4 mb-4">
+    <div class="stat-card"><div class="stat-card-label">Total Users</div><div class="stat-card-num">1,251</div><div class="stat-card-sub" style="color:var(--success)">↑ 46 this month</div></div>
+    <div class="stat-card"><div class="stat-card-label">Teachers</div><div class="stat-card-num">3</div><div class="stat-card-sub">Active accounts</div></div>
+    <div class="stat-card"><div class="stat-card-label">Forum Posts</div><div class="stat-card-num">142</div><div class="stat-card-sub">12 today</div></div>
+    <div class="stat-card"><div class="stat-card-label">Flagged Content</div><div class="stat-card-num" style="color:var(--danger)">2</div><div class="stat-card-sub" style="color:var(--danger)">Needs review</div></div>
+  </div>
+  <div class="grid grid-2 gap-2">
+    <div class="card"><div class="card-title mb-3">Recent Signups</div>
+      ${[{n:'Arjun Mehta',p:'+91 98765 43210',t:'2 mins ago'},{n:'Priya Sharma',p:'+91 87654 32109',t:'1 hour ago'},{n:'Karan Verma',p:'+91 76543 21098',t:'3 hours ago'}].map(u=>`
+      <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)">
+        <div class="avatar">${u.n.split(' ').map(x=>x[0]).join('')}</div>
+        <div style="flex:1"><div style="font-size:13px;font-weight:500">${u.n}</div><div style="font-size:12px;color:var(--text-3)">${u.p}</div></div>
+        <span style="font-size:12px;color:var(--text-3)">${u.t}</span>
+      </div>`).join('')}
+      <button class="btn btn-ghost btn-sm mt-2" onclick="showPage('admin-users')">View All Users →</button>
+    </div>
+    <div class="card"><div class="card-title mb-3">Moderation Queue</div>
+      <div style="background:rgba(220,38,38,0.06);border:1px solid rgba(220,38,38,0.2);border-radius:10px;padding:1rem;margin-bottom:8px">
+        <div style="font-size:13px;font-weight:600;color:var(--danger);margin-bottom:4px">⚠ Flagged Post</div>
+        <div style="font-size:12px;color:var(--text-2)">Post contains inappropriate content reported by 2 users.</div>
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <button class="btn btn-danger btn-sm">Remove Post</button>
+          <button class="btn btn-ghost btn-sm">Dismiss</button>
+        </div>
+      </div>
+      <div style="font-size:13px;color:var(--text-3);text-align:center;padding:1rem">No other items in queue</div>
+    </div>
+  </div>`;
+}
+
+function renderSubjects() {
+  return `
+  <h1 class="page-title">Subjects 📚</h1>
+  <p class="page-sub">Choose a subject to browse chapters and playlists.</p>
+  <div class="grid grid-2 mb-4">
+    ${DATA.subjects.map(s=>`
+    <div class="subject-card ${s.cls}" onclick="showPage('subject','${s.id}')">
+      <div class="subject-emoji">${s.emoji}</div>
+      <div class="subject-name">${s.name}</div>
+      <div class="subject-count">${s.chapters.length} chapters · ${s.chapters.reduce((a,c)=>a+c.playlists,0)} playlists</div>
+      <div class="subject-bar"></div>
+    </div>`).join('')}
+  </div>`;
+}
+
+function renderSubject(subjectId) {
+  const subject = DATA.subjects.find(s=>s.id===subjectId);
+  if (!subject) return '<div>Subject not found</div>';
+  state.currentSubject = subject;
+  return `
+  <div class="breadcrumb"><span onclick="showPage('subjects')">Subjects</span><span class="breadcrumb-sep">›</span><span class="current">${subject.name}</span></div>
+  <h1 class="page-title">${subject.emoji} ${subject.name}</h1>
+  <p class="page-sub">${subject.chapters.length} chapters · Click a chapter to view playlists and materials</p>
+  <div>
+    ${subject.chapters.map(ch=>`
+    <div class="chapter-row" onclick="showPage('chapter','${subjectId}','${ch.id}')">
+      <div class="chapter-row-num ${subject.cls}-num">CH ${ch.num}</div>
+      <div class="chapter-row-info">
+        <div class="chapter-row-name">${ch.name}</div>
+        <div class="chapter-row-meta">${ch.playlists} playlist${ch.playlists>1?'s':''} · ${ch.materials} material${ch.materials>1?'s':''}</div>
+      </div>
+      <span class="chapter-row-arrow">›</span>
+    </div>`).join('')}
+  </div>`;
+}
+
+function renderChapter(subjectId, chapterId) {
+  const subject = DATA.subjects.find(s=>s.id===subjectId);
+  const chapter = subject?.chapters.find(c=>c.id===chapterId);
+  if (!subject || !chapter) return '<div>Not found</div>';
+  state.currentChapter = chapter;
+
+  const playlists = DATA.playlists[chapterId] || generatePlaylists(chapter, subjectId);
+  const materials = DATA.materials[chapterId] || generateMaterials(chapter);
+
+  const typeIcon = { TEST:'📝', ASSIGNMENT:'📋', SOLUTION:'✅', NOTE:'📄' };
+  const typeClass = { TEST:'type-test', ASSIGNMENT:'type-assignment', SOLUTION:'type-solution', NOTE:'type-note' };
+  const typeBadge = { TEST:'badge-red', ASSIGNMENT:'badge-blue', SOLUTION:'badge-green', NOTE:'badge-purple' };
+
+  return `
+  <div class="breadcrumb">
+    <span onclick="showPage('subjects')">Subjects</span><span class="breadcrumb-sep">›</span>
+    <span onclick="showPage('subject','${subjectId}')">${subject.name}</span><span class="breadcrumb-sep">›</span>
+    <span class="current">${chapter.name}</span>
+  </div>
+  <h1 class="page-title">${chapter.name}</h1>
+  <p class="page-sub">${subject.name} · Chapter ${chapter.num}</p>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab(this,'tab-playlists')">🎬 Playlists (${playlists.length})</button>
+    <button class="tab-btn" onclick="switchTab(this,'tab-materials')">📁 Materials (${materials.length})</button>
+  </div>
+
+  <div id="tab-playlists" class="tab-pane active">
+    <div class="grid grid-auto">
+      ${playlists.map(p=>`
+      <div class="playlist-card" onclick="showPage('watch-playlist','${subjectId}','${chapterId}','${p.id}')">
+        <div class="playlist-thumb">
+          <div class="playlist-thumb-inner">
+            <div class="play-btn">▶</div>
+            <div class="playlist-count-label">${p.videos} videos</div>
+          </div>
+        </div>
+        <div class="playlist-body">
+          <div class="playlist-title">${p.title}</div>
+          <div class="playlist-meta">
+            <span>👁 ${p.views.toLocaleString()} views</span>
+            <span>·</span>
+            <span>📹 ${p.videos} videos</span>
+          </div>
+          <div class="playlist-actions">
+            <button class="btn btn-primary btn-sm" onclick="event.stopPropagation();showPage('watch-playlist','${subjectId}','${chapterId}','${p.id}')">Watch Now</button>
+            <button class="btn btn-ghost btn-sm bookmark-btn" data-pid="${p.id}" onclick="event.stopPropagation();toggleBookmark('${p.id}',this)">
+              ${state.bookmarks.includes(p.id)?'🔖':'🏷'} ${state.bookmarks.includes(p.id)?'Saved':'Save'}
+            </button>
+          </div>
+        </div>
+      </div>`).join('')}
+    </div>
+  </div>
+
+  <div id="tab-materials" class="tab-pane">
+    ${materials.map(m=>`
+    <div class="material-card">
+      <div class="material-icon ${typeClass[m.type]}">${typeIcon[m.type]}</div>
+      <div class="material-info">
+        <div class="material-title">${m.title}</div>
+        <div class="material-meta">${m.date} · ${m.size}</div>
+      </div>
+      <span class="badge ${typeBadge[m.type]}">${m.type}</span>
+      <div class="material-actions">
+        <button class="btn btn-primary btn-sm" onclick="downloadMaterial('${m.id}')">⬇ Download</button>
+      </div>
+    </div>`).join('')}
+  </div>`;
+}
+
+function renderWatchPlaylist(subjectId, chapterId, playlistId) {
+  const subject = DATA.subjects.find(s=>s.id===subjectId);
+  const chapter = subject?.chapters.find(c=>c.id===chapterId);
+  const allPlaylists = DATA.playlists[chapterId] || generatePlaylists(chapter, subjectId);
+  const playlist = allPlaylists.find(p=>p.id===playlistId) || allPlaylists[0];
+
+  return `
+  <div class="breadcrumb">
+    <span onclick="showPage('subjects')">Subjects</span><span class="breadcrumb-sep">›</span>
+    <span onclick="showPage('subject','${subjectId}')">${subject?.name}</span><span class="breadcrumb-sep">›</span>
+    <span onclick="showPage('chapter','${subjectId}','${chapterId}')">${chapter?.name}</span><span class="breadcrumb-sep">›</span>
+    <span class="current">Watch</span>
+  </div>
+  <div class="grid" style="grid-template-columns:1fr 320px;gap:1.5rem">
+    <div>
+      <div class="yt-embed-wrapper mb-3">
+        <iframe src="https://www.youtube.com/embed/videoseries?list=${playlist.ytId}&rel=0&autoplay=0" allowfullscreen loading="lazy" title="${playlist.title}"></iframe>
+      </div>
+      <h2 style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;margin-bottom:8px">${playlist.title}</h2>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:1rem">
+        <span style="font-size:13px;color:var(--text-3)">👁 ${playlist.views?.toLocaleString()} views · 📹 ${playlist.videos} videos</span>
+        <button class="btn btn-ghost btn-sm" onclick="toggleBookmark('${playlist.id}',this)" id="watchBookmarkBtn">
+          ${state.bookmarks.includes(playlist.id)?'🔖 Saved':'🏷 Save'}
+        </button>
+      </div>
+      <div class="card card-sm">
+        <div style="font-size:13px;font-weight:600;margin-bottom:4px">About this playlist</div>
+        <div style="font-size:13px;color:var(--text-2);line-height:1.6">This playlist covers ${playlist.title} from ${chapter?.name} (${subject?.name}). The videos are carefully sequenced from basics to advanced, with examples and practice problems. Subscribe for regular updates.</div>
+      </div>
+    </div>
+    <div>
+      <div class="section-head-title mb-2">Other Playlists</div>
+      ${allPlaylists.filter(p=>p.id!==playlistId).map(p=>`
+      <div class="playlist-card mb-2" onclick="showPage('watch-playlist','${subjectId}','${chapterId}','${p.id}')">
+        <div style="display:flex;gap:10px;padding:10px">
+          <div style="width:80px;height:52px;border-radius:6px;background:linear-gradient(135deg,#0d1b3e,#1e3a8a);flex-shrink:0;display:flex;align-items:center;justify-content:center;color:var(--amber);font-size:1.2rem">▶</div>
+          <div><div style="font-size:13px;font-weight:500;line-height:1.3">${p.title}</div><div style="font-size:11px;color:var(--text-3);margin-top:2px">${p.videos} videos</div></div>
+        </div>
+      </div>`).join('')}
+      <div class="divider"></div>
+      <button class="btn btn-ghost btn-sm" onclick="showPage('forum')">💬 Ask a doubt about this chapter</button>
+    </div>
+  </div>`;
+}
+
+function renderForum() {
+  const isTeacher = state.role === 'teacher' || state.role === 'admin';
+  return `
+  <h1 class="page-title">${isTeacher ? 'Student Doubts 💬' : 'Doubt Forum 💬'}</h1>
+  <p class="page-sub">${isTeacher ? 'Answer student questions and resolve doubts.' : 'Ask questions, help others, learn together.'}</p>
+
+  ${!isTeacher ? `<button class="btn btn-primary mb-3" onclick="showNewPostModal()">✚ Post a Doubt</button>` : ''}
+
+  <div style="display:flex;gap:8px;margin-bottom:1.5rem;flex-wrap:wrap">
+    <button class="pill" style="background:var(--amber);color:#0d1b3e;font-weight:500" onclick="filterForum('all',this)">All</button>
+    <button class="pill badge-gray" onclick="filterForum('maths',this)">📐 Maths</button>
+    <button class="pill badge-gray" onclick="filterForum('chemistry',this)">⚗️ Chemistry</button>
+    <button class="pill badge-gray" onclick="filterForum('unresolved',this)">⏳ Unresolved</button>
+    <button class="pill badge-gray" onclick="filterForum('resolved',this)">✅ Resolved</button>
+  </div>
+
+  <div id="forumList">
+    ${state.forumData.map(p=>renderForumPost(p, isTeacher)).join('')}
+  </div>
+
+  <!-- New Post Modal -->
+  <div class="modal-overlay" id="newPostModal">
+    <div class="modal">
+      <h2 class="auth-title">Post a Doubt ✍️</h2>
+      <p class="auth-sub">Be specific — good questions get faster answers!</p>
+      <div class="form-group">
+        <label class="form-label">Subject</label>
+        <select class="form-control" id="newPostSubject">
+          <option>Mathematics</option><option>Chemistry</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Chapter / Topic</label>
+        <input type="text" class="form-control" id="newPostChapter" placeholder="e.g. Integration by Parts">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Your Question (Title)</label>
+        <input type="text" class="form-control" id="newPostTitle" placeholder="e.g. How do I solve ∫x² eˣ dx?">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Describe your doubt</label>
+        <textarea class="form-control" id="newPostBody" rows="3" placeholder="Explain what you've tried and where you're stuck..."></textarea>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-primary" style="flex:1" onclick="submitPost()">Post Doubt</button>
+        <button class="btn btn-ghost" onclick="document.getElementById('newPostModal').classList.remove('open')">Cancel</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderForumPost(p, isTeacher) {
+  return `
+  <div class="forum-post" id="fp-${p.id}">
+    <div class="forum-post-header">
+      <div class="avatar">${p.initials}</div>
+      <div class="forum-post-meta">
+        <div class="forum-post-title">${p.title}</div>
+        <div class="forum-post-info">${p.author} · ${p.subject} · ${p.chapter} · ${p.time}</div>
+      </div>
+      ${p.resolved ? '<span class="resolved-badge">✓ Resolved</span>' : ''}
+    </div>
+    <div class="forum-post-body">${p.body}</div>
+    ${p.replies.map(r=>`
+    <div class="forum-reply ${r.role==='teacher'?'teacher-reply':''}">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+        <div class="avatar" style="width:28px;height:28px;font-size:11px">${r.initials}</div>
+        <span style="font-size:13px;font-weight:500">${r.author}</span>
+        ${r.role==='teacher'?'<span class="badge badge-amber">👨‍🏫 Teacher</span>':''}
+        <span style="font-size:11px;color:var(--text-3);margin-left:auto">${r.time}</span>
+      </div>
+      <div style="font-size:13px;color:var(--text-2);line-height:1.6">${r.body}</div>
+    </div>`).join('')}
+    <div class="forum-post-footer mt-2">
+      <button class="vote-btn ${p.voted?'voted':''}" onclick="upvotePost('${p.id}',this)">▲ ${p.upvotes}</button>
+      <button class="vote-btn" onclick="toggleReplyBox('${p.id}')">💬 Reply</button>
+      ${isTeacher && !p.resolved ? `<button class="vote-btn" onclick="resolvePost('${p.id}')">✓ Mark Resolved</button>` : ''}
+    </div>
+    <div id="reply-box-${p.id}" style="display:none;margin-top:10px">
+      <div style="display:flex;gap:8px">
+        <input type="text" class="form-control" id="reply-input-${p.id}" placeholder="Write your reply..." style="flex:1">
+        <button class="btn btn-primary btn-sm" onclick="submitReply('${p.id}')">Send</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderBookmarks() {
+  const bookmarked = [];
+  Object.values(DATA.playlists).flat().forEach(p=>{ if(state.bookmarks.includes(p.id)) bookmarked.push(p); });
+  if (!bookmarked.length) return `<h1 class="page-title">Bookmarks 🔖</h1><div class="empty-state"><div class="empty-icon">🔖</div><div class="empty-title">No bookmarks yet</div><div class="empty-text">Save playlists you want to revisit later</div></div>`;
+  return `
+  <h1 class="page-title">Bookmarks 🔖</h1>
+  <p class="page-sub">${bookmarked.length} saved playlist${bookmarked.length>1?'s':''}</p>
+  <div class="grid grid-auto">
+    ${bookmarked.map(p=>`
+    <div class="playlist-card">
+      <div class="playlist-thumb"><div class="playlist-thumb-inner"><div class="play-btn">▶</div><div class="playlist-count-label">${p.videos} videos</div></div></div>
+      <div class="playlist-body">
+        <div class="playlist-title">${p.title}</div>
+        <div class="playlist-meta"><span>👁 ${p.views.toLocaleString()} views</span></div>
+        <div class="playlist-actions">
+          <button class="btn btn-primary btn-sm">Watch Now</button>
+          <button class="btn btn-ghost btn-sm" onclick="toggleBookmark('${p.id}',this)">🗑 Remove</button>
+        </div>
+      </div>
+    </div>`).join('')}
+  </div>`;
+}
+
+function renderTeacherPlaylists() {
+  const allPlaylists = Object.values(DATA.playlists).flat();
+  return `
+  <h1 class="page-title">Manage Playlists 🎬</h1>
+  <p class="page-sub">Add, edit or remove YouTube playlists organised by chapter.</p>
+  <button class="btn btn-primary mb-4" onclick="showAddPlaylistModal()">✚ Add New Playlist</button>
+
+  <div class="card mb-4">
+    <table class="table">
+      <thead><tr><th>Title</th><th>Subject</th><th>YouTube ID</th><th>Videos</th><th>Views</th><th>Status</th><th>Actions</th></tr></thead>
+      <tbody>
+        ${allPlaylists.map(p=>`
+        <tr>
+          <td style="font-weight:500;max-width:220px">${p.title}</td>
+          <td><span class="badge badge-blue">Maths</span></td>
+          <td><span class="tag">${p.ytId.substring(0,16)}…</span></td>
+          <td>${p.videos}</td>
+          <td>${p.views?.toLocaleString()}</td>
+          <td><span class="badge badge-green">Published</span></td>
+          <td><div style="display:flex;gap:4px">
+            <button class="btn btn-ghost btn-sm" onclick="showToast('Edit feature — connect backend','info')">✏ Edit</button>
+            <button class="btn btn-danger btn-sm" onclick="showToast('Playlist deleted','success')">🗑</button>
+          </div></td>
+        </tr>`).join('')}
+        ${state.uploadedPlaylists.map(p=>`
+        <tr>
+          <td style="font-weight:500">${p.title}</td>
+          <td><span class="badge badge-blue">${p.subject}</span></td>
+          <td><span class="tag">${p.ytId}</span></td>
+          <td>—</td><td>0</td>
+          <td><span class="badge badge-amber">New</span></td>
+          <td><button class="btn btn-danger btn-sm" onclick="showToast('Removed','success')">🗑</button></td>
+        </tr>`).join('')}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Add playlist modal -->
+  <div class="modal-overlay" id="addPlaylistModal">
+    <div class="modal">
+      <h2 class="auth-title">Add YouTube Playlist</h2>
+      <p class="auth-sub">Paste the YouTube playlist ID and assign it to a chapter.</p>
+      <div class="form-group"><label class="form-label">Playlist Title</label><input type="text" class="form-control" id="plTitle" placeholder="e.g. Integration — Complete Chapter"></div>
+      <div class="form-group"><label class="form-label">Subject</label><select class="form-control" id="plSubject"><option>Mathematics</option><option>Chemistry</option></select></div>
+      <div class="form-group"><label class="form-label">Chapter</label><select class="form-control" id="plChapter"><option>Integrals</option><option>Determinants</option><option>Electrochemistry</option><option>p-Block Elements</option></select></div>
+      <div class="form-group"><label class="form-label">YouTube Playlist ID</label><input type="text" class="form-control" id="plYtId" placeholder="PLgNUCz66KaWR2LM..."><p style="font-size:11px;color:var(--text-3);margin-top:4px">Find this in the YouTube URL: youtube.com/playlist?list=<strong>THIS_PART</strong></p></div>
+      <div style="display:flex;gap:8px"><button class="btn btn-primary" style="flex:1" onclick="savePlaylist()">Save Playlist</button><button class="btn btn-ghost" onclick="document.getElementById('addPlaylistModal').classList.remove('open')">Cancel</button></div>
+    </div>
+  </div>`;
+}
+
+function renderTeacherMaterials() {
+  const allMaterials = Object.values(DATA.materials).flat();
+  return `
+  <h1 class="page-title">Manage Materials 📁</h1>
+  <p class="page-sub">Upload tests, assignments, solutions and notes for students.</p>
+
+  <div class="grid grid-2 gap-2 mb-4">
+    <div class="card">
+      <div class="card-title mb-3">Upload New Material</div>
+      <div class="form-group"><label class="form-label">Title</label><input type="text" class="form-control" id="matTitle" placeholder="e.g. Integration Chapter Test"></div>
+      <div class="form-group"><label class="form-label">Type</label><select class="form-control" id="matType"><option>TEST</option><option>ASSIGNMENT</option><option>SOLUTION</option><option>NOTE</option></select></div>
+      <div class="form-group"><label class="form-label">Subject & Chapter</label><select class="form-control" id="matChap"><option>Maths — Integrals</option><option>Maths — Matrices</option><option>Chemistry — Electrochemistry</option><option>Chemistry — Solutions</option></select></div>
+      <div class="upload-zone" onclick="document.getElementById('fileInput').click()" id="uploadZone">
+        <div class="upload-icon">📄</div>
+        <div class="upload-text">Drop PDF or image here · <span>Browse files</span></div>
+        <div style="font-size:12px;color:var(--text-3);margin-top:4px">Supports PDF, JPG, PNG (max 25 MB)</div>
+        <input type="file" id="fileInput" style="display:none" accept=".pdf,.jpg,.jpeg,.png" onchange="fileSelected(this)">
+      </div>
+      <div id="filePreview" style="display:none;margin-top:8px;padding:8px 12px;background:var(--surface);border-radius:8px;font-size:13px"></div>
+      <button class="btn btn-primary btn-full mt-2" onclick="uploadMaterial()">Upload Material</button>
+    </div>
+    <div class="card">
+      <div class="card-title mb-3">Upload Stats</div>
+      ${[{label:'Total Materials',val:'84',icon:'📁'},{label:'Tests',val:'24',icon:'📝'},{label:'Assignments',val:'18',icon:'📋'},{label:'Solutions',val:'30',icon:'✅'},{label:'Notes',val:'12',icon:'📄'}].map(s=>`
+      <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)">
+        <span style="font-size:1.2rem">${s.icon}</span>
+        <span style="font-size:13px;flex:1">${s.label}</span>
+        <strong style="font-size:16px;font-family:'Playfair Display',serif">${s.val}</strong>
+      </div>`).join('')}
+    </div>
+  </div>
+
+  <div class="section-head-title mb-2">Uploaded Materials</div>
+  <div class="card">
+    <table class="table">
+      <thead><tr><th>Title</th><th>Type</th><th>Chapter</th><th>Date</th><th>Downloads</th><th>Actions</th></tr></thead>
+      <tbody>
+        ${allMaterials.slice(0,6).map(m=>`
+        <tr>
+          <td style="font-weight:500">${m.title}</td>
+          <td><span class="badge ${m.type==='TEST'?'badge-red':m.type==='SOLUTION'?'badge-green':m.type==='NOTE'?'badge-purple':'badge-blue'}">${m.type}</span></td>
+          <td style="font-size:13px;color:var(--text-3)">Chapter</td>
+          <td style="font-size:13px;color:var(--text-3)">${m.date}</td>
+          <td>${Math.floor(Math.random()*200+50)}</td>
+          <td><div style="display:flex;gap:4px">
+            <button class="btn btn-ghost btn-sm" onclick="showToast('Edit — connect backend','info')">✏</button>
+            <button class="btn btn-danger btn-sm" onclick="showToast('Material deleted','success')">🗑</button>
+          </div></td>
+        </tr>`).join('')}
+        ${state.uploadedMaterials.map(m=>`
+        <tr><td style="font-weight:500">${m.title}</td><td><span class="badge badge-amber">${m.type}</span></td><td style="font-size:13px">${m.chapter}</td><td style="font-size:13px">Today</td><td>0</td><td><button class="btn btn-danger btn-sm">🗑</button></td></tr>`).join('')}
+      </tbody>
+    </table>
+  </div>`;
+}
+
+function renderNotifications() {
+  state.notifRead = true;
+  document.getElementById('notifDot').style.display = 'none';
+  return `
+  <h1 class="page-title">Notifications 🔔</h1>
+  <p class="page-sub">Stay updated with new content and activity.</p>
+  ${DATA.notifications.map(n=>`
+  <div class="material-card mb-2" style="${!n.read?'border-left:3px solid var(--amber);':''}">
+    <div class="material-icon" style="font-size:1.5rem;background:var(--surface)">${n.icon}</div>
+    <div class="material-info">
+      <div class="material-title">${n.title} ${!n.read?'<span class="badge badge-amber" style="margin-left:4px">New</span>':''}</div>
+      <div class="material-meta">${n.body}</div>
+      <div class="material-meta">${n.time}</div>
+    </div>
+  </div>`).join('')}`;
+}
+
+function renderProfile() {
+  const initials = state.user.name.split(' ').map(n=>n[0]).join('');
+  return `
+  <h1 class="page-title">My Profile 👤</h1>
+  <div class="grid grid-2 gap-2">
+    <div class="card">
+      <div style="text-align:center;margin-bottom:1.5rem">
+        <div class="avatar avatar-lg" style="margin:0 auto 12px">${initials}</div>
+        <div style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700">${state.user.name}</div>
+        <div style="font-size:13px;color:var(--text-3)">${state.user.phone}</div>
+        <span class="badge badge-amber" style="margin-top:8px">${state.user.role.toUpperCase()}</span>
+      </div>
+      <div class="divider"></div>
+      <div class="form-group"><label class="form-label">Display Name</label><input type="text" class="form-control" value="${state.user.name}"></div>
+      <div class="form-group"><label class="form-label">Phone</label><input type="text" class="form-control" value="${state.user.phone}" disabled style="opacity:0.6"></div>
+      <button class="btn btn-primary" onclick="showToast('Profile updated!','success')">Save Changes</button>
+    </div>
+    <div>
+      <div class="card mb-2">
+        <div class="card-title mb-3">Preferences</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)">
+          <span style="font-size:13px">Dark Mode</span>
+          <label class="toggle"><input type="checkbox" id="profileDarkToggle" ${state.darkMode?'checked':''} onchange="toggleDark()"><span class="toggle-slider"></span></label>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)">
+          <span style="font-size:13px">Email Notifications</span>
+          <label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0">
+          <span style="font-size:13px">New Content Alerts</span>
+          <label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title mb-3">Contact Teacher</div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+          <div class="avatar" style="background:#25D366;color:#fff;font-size:1.2rem">📱</div>
+          <div><div style="font-size:13px;font-weight:500">WhatsApp</div><div style="font-size:12px;color:var(--text-3)">+91 98765 43210</div></div>
+          <a href="https://wa.me/919876543210" target="_blank" class="btn btn-success btn-sm" style="margin-left:auto">Open</a>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="avatar" style="background:#EA4335;color:#fff;font-size:1.2rem">📧</div>
+          <div><div style="font-size:13px;font-weight:500">Email</div><div style="font-size:12px;color:var(--text-3)">teacher@vidyalay.in</div></div>
+          <a href="mailto:teacher@vidyalay.in" class="btn btn-ghost btn-sm" style="margin-left:auto">Email</a>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderAdminUsers() {
+  const users = [
+    {name:'Arjun Mehta',phone:'+91 98765 43210',role:'STUDENT',joined:'2 Jan 2025',active:'2 mins ago',status:'active'},
+    {name:'Priya Sharma',phone:'+91 87654 32109',role:'STUDENT',joined:'5 Jan 2025',active:'1 hour ago',status:'active'},
+    {name:'Karan Verma',phone:'+91 76543 21098',role:'STUDENT',joined:'8 Jan 2025',active:'3 hours ago',status:'active'},
+    {name:'Rahul Sharma',phone:'+91 99887 76655',role:'TEACHER',joined:'1 Dec 2024',active:'10 mins ago',status:'active'},
+    {name:'Vikram Nair',phone:'+91 98877 66554',role:'STUDENT',joined:'10 Jan 2025',active:'2 days ago',status:'active'},
+    {name:'Sneha Patel',phone:'+91 97766 55443',role:'STUDENT',joined:'12 Jan 2025',active:'5 days ago',status:'inactive'},
+  ];
+  return `
+  <h1 class="page-title">User Management 👥</h1>
+  <p class="page-sub">View and manage all registered users.</p>
+  <div class="grid grid-4 mb-4">
+    <div class="stat-card"><div class="stat-card-label">Total Users</div><div class="stat-card-num">1,251</div></div>
+    <div class="stat-card"><div class="stat-card-label">Students</div><div class="stat-card-num">1,248</div></div>
+    <div class="stat-card"><div class="stat-card-label">Teachers</div><div class="stat-card-num">3</div></div>
+    <div class="stat-card"><div class="stat-card-label">Active Today</div><div class="stat-card-num">387</div></div>
+  </div>
+  <div class="card">
+    <div style="display:flex;gap:8px;margin-bottom:1rem">
+      <div class="search-bar" style="width:auto;flex:1"><span>🔍</span><input type="text" placeholder="Search users..."></div>
+      <select class="form-control" style="width:140px"><option>All Roles</option><option>STUDENT</option><option>TEACHER</option></select>
+    </div>
+    <table class="table">
+      <thead><tr><th>User</th><th>Phone</th><th>Role</th><th>Joined</th><th>Last Active</th><th>Status</th><th>Actions</th></tr></thead>
+      <tbody>
+        ${users.map(u=>`
+        <tr>
+          <td><div style="display:flex;align-items:center;gap:8px"><div class="avatar" style="width:30px;height:30px;font-size:11px">${u.name.split(' ').map(n=>n[0]).join('')}</div><span style="font-size:13px;font-weight:500">${u.name}</span></div></td>
+          <td style="font-size:13px">${u.phone}</td>
+          <td><span class="badge ${u.role==='TEACHER'?'badge-amber':'badge-blue'}">${u.role}</span></td>
+          <td style="font-size:12px;color:var(--text-3)">${u.joined}</td>
+          <td style="font-size:12px;color:var(--text-3)">${u.active}</td>
+          <td><span class="badge ${u.status==='active'?'badge-green':'badge-gray'}">${u.status}</span></td>
+          <td><button class="btn btn-ghost btn-sm" onclick="showToast('User managed','info')">Manage</button></td>
+        </tr>`).join('')}
+      </tbody>
+    </table>
+  </div>`;
+}
+
+function renderAdminContent() {
+  return `
+  <h1 class="page-title">Content Overview 📁</h1>
+  <p class="page-sub">All content across subjects and chapters.</p>
+  <div class="grid grid-4 mb-4">
+    <div class="stat-card"><div class="stat-card-label">Total Playlists</div><div class="stat-card-num">48</div></div>
+    <div class="stat-card"><div class="stat-card-label">Total Materials</div><div class="stat-card-num">84</div></div>
+    <div class="stat-card"><div class="stat-card-label">Total Views</div><div class="stat-card-num">28.4K</div></div>
+    <div class="stat-card"><div class="stat-card-label">Total Downloads</div><div class="stat-card-num">5.2K</div></div>
+  </div>
+  ${DATA.subjects.map(s=>`
+  <div class="card mb-3">
+    <div class="card-title">${s.emoji} ${s.name}</div>
+    <div class="card-subtitle">${s.chapters.length} chapters</div>
+    <table class="table">
+      <thead><tr><th>Chapter</th><th>Playlists</th><th>Materials</th><th>Views</th></tr></thead>
+      <tbody>${s.chapters.slice(0,4).map(ch=>`
+      <tr>
+        <td style="font-size:13px;font-weight:500">CH ${ch.num} — ${ch.name}</td>
+        <td>${ch.playlists}</td><td>${ch.materials}</td>
+        <td>${Math.floor(Math.random()*2000+200).toLocaleString()}</td>
+      </tr>`).join('')}</tbody>
+    </table>
+    <div style="font-size:12px;color:var(--text-3);text-align:center;padding:6px">+ ${s.chapters.length-4} more chapters</div>
+  </div>`).join('')}`;
+}
+
+// ═══════════════════════════════════════════════════════
+//  HELPERS & GENERATORS
+// ═══════════════════════════════════════════════════════
+function generatePlaylists(chapter, subjectId) {
+  return [
+    { id: `${chapter.id}_1`, title: `${chapter.name} — Complete Theory`, ytId: 'PLgNUCz66KaWR2LMFKc4E9nOm-0Zf9KjBT', videos: Math.floor(Math.random()*10+5), views: Math.floor(Math.random()*2000+500), bookmarked: false },
+    { id: `${chapter.id}_2`, title: `${chapter.name} — Practice Problems`, ytId: 'PLgNUCz66KaWR2LMFKc4E9nOm-0Zf9KjBT', videos: Math.floor(Math.random()*8+4), views: Math.floor(Math.random()*1500+300), bookmarked: false },
+  ];
+}
+function generateMaterials(chapter) {
+  return [
+    { id: `${chapter.id}_m1`, type: 'TEST', title: `${chapter.name} — Chapter Test`, date: '15 Feb 2025', size: '245 KB' },
+    { id: `${chapter.id}_m2`, type: 'SOLUTION', title: `${chapter.name} — Test Solutions`, date: '17 Feb 2025', size: '310 KB' },
+    { id: `${chapter.id}_m3`, type: 'ASSIGNMENT', title: `${chapter.name} — DPP Set`, date: '10 Feb 2025', size: '128 KB' },
+  ];
+}
+function switchTab(btn, paneId) {
+  btn.closest('.tabs').querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const tabContent = btn.closest('.tabs').nextElementSibling;
+  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+  document.getElementById(paneId).classList.add('active');
+}
+function toggleBookmark(id, btn) {
+  if (state.bookmarks.includes(id)) {
+    state.bookmarks = state.bookmarks.filter(b=>b!==id);
+    if(btn) btn.textContent = '🏷 Save';
+    showToast('Removed from bookmarks','info');
+  } else {
+    state.bookmarks.push(id);
+    if(btn) btn.textContent = '🔖 Saved';
+    showToast('Saved to bookmarks!','success');
+  }
+}
+function downloadMaterial(id) {
+  showToast('Downloading… (connect S3 for real files)','info');
+}
+function upvotePost(id, btn) {
+  const post = state.forumData.find(p=>p.id===id);
+  if (!post) return;
+  if (post.voted) { post.upvotes--; post.voted=false; btn.classList.remove('voted'); btn.textContent=`▲ ${post.upvotes}`; }
+  else { post.upvotes++; post.voted=true; btn.classList.add('voted'); btn.textContent=`▲ ${post.upvotes}`; }
+}
+function toggleReplyBox(id) {
+  const box = document.getElementById(`reply-box-${id}`);
+  box.style.display = box.style.display==='none'?'block':'none';
+  if(box.style.display==='block') document.getElementById(`reply-input-${id}`)?.focus();
+}
+function submitReply(id) {
+  const input = document.getElementById(`reply-input-${id}`);
+  const val = input?.value.trim();
+  if(!val) return;
+  const post = state.forumData.find(p=>p.id===id);
+  if(post) {
+    post.replies.push({ author: state.user.name, initials: state.user.name.split(' ').map(n=>n[0]).join(''), role: state.role, body: val, time: 'just now' });
+    showPage('forum');
+    showToast('Reply posted!','success');
+  }
+}
+function resolvePost(id) {
+  const post = state.forumData.find(p=>p.id===id);
+  if(post) { post.resolved=true; showPage(state.role==='teacher'?'teacher-forum':'forum'); showToast('Doubt marked as resolved ✓','success'); }
+}
+function showNewPostModal() { document.getElementById('newPostModal').classList.add('open'); }
+function submitPost() {
+  const title = document.getElementById('newPostTitle')?.value.trim();
+  const body = document.getElementById('newPostBody')?.value.trim();
+  const subject = document.getElementById('newPostSubject')?.value;
+  const chapter = document.getElementById('newPostChapter')?.value;
+  if(!title||!body) { showToast('Please fill all fields','error'); return; }
+  state.forumData.unshift({ id:'f'+Date.now(), author:state.user.name, initials:state.user.name.split(' ').map(n=>n[0]).join(''), role:state.role, subject, chapter, title, body, upvotes:0, voted:false, resolved:false, time:'just now', replies:[] });
+  document.getElementById('newPostModal').classList.remove('open');
+  showPage('forum');
+  showToast('Doubt posted! 💬','success');
+}
+function filterForum(filter, btn) {
+  document.querySelectorAll('.pill').forEach(p=>{ p.style.background=''; p.style.color=''; p.className='pill badge-gray'; });
+  btn.style.background='var(--amber)'; btn.style.color='#0d1b3e'; btn.style.fontWeight='500';
+  let filtered = [...state.forumData];
+  if(filter==='maths') filtered=filtered.filter(p=>p.subject==='Maths');
+  if(filter==='chemistry') filtered=filtered.filter(p=>p.subject==='Chemistry');
+  if(filter==='resolved') filtered=filtered.filter(p=>p.resolved);
+  if(filter==='unresolved') filtered=filtered.filter(p=>!p.resolved);
+  const isTeacher = state.role==='teacher'||state.role==='admin';
+  document.getElementById('forumList').innerHTML = filtered.length ? filtered.map(p=>renderForumPost(p,isTeacher)).join('') : '<div class="empty-state"><div class="empty-icon">💬</div><div class="empty-title">No posts found</div></div>';
+}
+function showAddPlaylistModal() { document.getElementById('addPlaylistModal').classList.add('open'); }
+function savePlaylist() {
+  const title = document.getElementById('plTitle')?.value.trim();
+  const ytId = document.getElementById('plYtId')?.value.trim();
+  const subject = document.getElementById('plSubject')?.value;
+  if(!title||!ytId) { showToast('Fill all fields','error'); return; }
+  state.uploadedPlaylists.push({ title, ytId, subject });
+  document.getElementById('addPlaylistModal').classList.remove('open');
+  showPage('teacher-playlists');
+  showToast('Playlist added successfully! 🎬','success');
+}
+function fileSelected(input) {
+  if(input.files[0]) {
+    const f = input.files[0];
+    document.getElementById('filePreview').style.display='block';
+    document.getElementById('filePreview').innerHTML=`📄 ${f.name} <span style="color:var(--text-3)">(${(f.size/1024).toFixed(0)} KB)</span>`;
+    document.getElementById('uploadZone').style.borderColor='var(--success)';
+  }
+}
+function uploadMaterial() {
+  const title = document.getElementById('matTitle')?.value.trim();
+  const type = document.getElementById('matType')?.value;
+  const chapter = document.getElementById('matChap')?.value;
+  if(!title) { showToast('Enter a material title','error'); return; }
+  state.uploadedMaterials.push({ title, type, chapter });
+  document.getElementById('matTitle').value='';
+  document.getElementById('filePreview').style.display='none';
+  document.getElementById('uploadZone').style.borderColor='';
+  showPage('teacher-materials');
+  showToast('Material uploaded successfully! 📄','success');
+}
+function globalSearchFn(q) {
+  if(!q.trim()) return;
+  // Search subjects/chapters
+}
+function toggleDark() {
+  state.darkMode = !state.darkMode;
+  document.documentElement.setAttribute('data-theme', state.darkMode?'dark':'light');
+  document.getElementById('darkIcon').textContent = state.darkMode?'☀️':'🌙';
+  document.getElementById('darkLabel').textContent = state.darkMode?'Light Mode':'Dark Mode';
+  const chk = document.getElementById('darkToggleCheck');
+  if(chk) chk.checked = state.darkMode;
+  const profileChk = document.getElementById('profileDarkToggle');
+  if(profileChk) profileChk.checked = state.darkMode;
+}
+function showToast(msg, type='info') {
+  const container = document.getElementById('toastContainer');
+  const t = document.createElement('div');
+  t.className = `toast toast-${type}`;
+  const icons = { success:'✅', error:'❌', info:'ℹ️' };
+  t.innerHTML = `<span>${icons[type]||'ℹ'}</span><span>${msg}</span>`;
+  container.appendChild(t);
+  setTimeout(()=>{ t.style.opacity='0'; t.style.transform='translateX(20px)'; t.style.transition='all 0.3s'; setTimeout(()=>t.remove(),300); }, 3000);
+}
+function scrollFeatures() { document.getElementById('features').scrollIntoView({ behavior:'smooth' }); }
+function bindPageEvents() {
+  // Tabs: handled via inline onclick
+}
+</script>
+</body>
+</html>
